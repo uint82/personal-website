@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}

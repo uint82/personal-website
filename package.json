@@ -14,8 +14,10 @@
     "vite-plugin-html-inject": "^1.1.2"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "@tailwindcss/vite": "^4.1.18",
     "animejs": "^4.2.2",
+    "marked": "^17.0.1",
     "tailwindcss": "^4.1.18",
     "zod": "^3.25.76"
   }

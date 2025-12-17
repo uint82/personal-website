@@ -4,5 +4,6 @@ import injectHTML from "vite-plugin-html-inject";
 
 export default defineConfig({
   root: "src",
+  publicDir: "../static",
   plugins: [tailwindcss(), injectHTML()],
 });

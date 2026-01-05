@@ -1,12 +1,12 @@
 :root {
   color-scheme: light;
-  --bg: #eeeeee;
-  --bg-light: #cbcdcd;
-  --text: #41474e;
-  --text-light: #646868;
-  --accent: #d26878;
-  --accent-light: #e08f67;
-  --accent-text: #eeeeee;
-  --border: #646868;
-  --link: #5690af;
+  --bg: #e8e3d5;
+  --bg-light: #f4f1e9;
+  --text: #1a2e25;
+  --text-light: #5c7066;
+  --accent: #2d8c68;
+  --accent-light: #e0ca3c;
+  --accent-text: #1a2e25;
+  --border: #c5beb1;
+  --link: #b22222;
 }

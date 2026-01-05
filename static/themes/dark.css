@@ -1,12 +1,12 @@
 :root {
   color-scheme: dark;
-  --bg: #222529;
-  --bg-light: #464949;
-  --text: #d6d6d6;
-  --text-light: #dbd5bc;
-  --accent: #78b6ad;
-  --accent-light: #87c9e5;
-  --accent-text: #222529;
-  --border: #dbd5bc;
-  --link: #e2aea2;
+  --bg: #0d1a14;
+  --bg-light: #162a21;
+  --text: #bfb381;
+  --text-light: #a3b3a7;
+  --accent: #f2d024;
+  --accent-light: #fff0a3;
+  --accent-text: #0d1a14;
+  --border: #2d4d3e;
+  --link: #f44336;
 }

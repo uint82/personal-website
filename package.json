@@ -16,9 +16,12 @@
     "vite-plugin-html-inject": "^1.1.2"
   },
   "dependencies": {
+    "@simonwep/pickr": "^1.9.1",
     "@tailwindcss/vite": "^4.1.18",
     "animejs": "^4.2.2",
+    "highlight.js": "^11.11.1",
     "marked": "^17.0.1",
+    "marked-highlight": "^2.2.3",
     "tailwindcss": "^4.1.18",
     "zod": "^3.25.76"
   }

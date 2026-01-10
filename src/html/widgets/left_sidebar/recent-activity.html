@@ -1,0 +1,25 @@
+<div class="widget">
+  <div class="widget-header">
+    <h6 class="widget-title">
+      <i class="fa-solid fa-code-commit"></i> Recent Activity
+    </h6>
+  </div>
+
+  <div class="widget-content">
+    <div id="activity-loading" class="activity-loading">
+      <span>Loading commits...</span>
+    </div>
+
+    <div id="activity-error" class="activity-error" style="display: none">
+      <span>Failed to load activity</span>
+    </div>
+
+    <div id="activity-content" style="display: none">
+      <div id="commits-list" class="commits-list"></div>
+
+      <div class="activity-footer"></div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="../../../ts/widgets/left_sidebar/recent-activity.ts"></script>

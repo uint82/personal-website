@@ -1,0 +1,34 @@
+<div class="widget">
+  <div class="widget-header">
+    <h6 class="widget-title">📊 Statistics</h6>
+  </div>
+
+  <div class="widget-content">
+    <div class="stat-list">
+      <div class="stat-row no-padding-top">
+        <span class="stat-label">Created:</span>
+        <span class="stat-value" id="created-date">YYYY-MM-DD</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">Updated:</span>
+        <span class="stat-value" id="updated-date">YYYY-MM-DD</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">Views:</span>
+        <span class="stat-value-container">
+          <span id="visitor-loading" class="stat-value loading">loading...</span>
+          <span class="stat-value" id="visitor-count" style="display: none"></span>
+        </span>
+      </div>
+
+      <div class="stat-row no-border no-padding-bottom">
+        <span class="stat-label">Surfing:</span>
+        <span class="stat-value" id="time-spent">00:00:00</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="../../../ts/widgets/right_sidebar/statistics.ts"></script>

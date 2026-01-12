@@ -1,0 +1,35 @@
+<div class="widget">
+  <div class="widget-header">
+    <h6 class="widget-title">🎯 A button</h6>
+    <button class="info-button" id="info-toggle" aria-label="What is this?">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="widget-content">
+    <div class="info-tooltip" id="info-tooltip">
+      <p>
+        A real-time global counter tracking every click from everyone visiting
+        this site. Completely pointless, yet oddly satisfying.
+      </p>
+    </div>
+
+    <div class="counter-display">
+      <div id="loading" class="counter-value" style="opacity: 0.5">---</div>
+      <div class="counter-value" id="global-count" style="display: none"></div>
+      <div class="sparkles-container" id="sparkles"></div>
+    </div>
+
+    <button class="click-button" id="click-button" disabled>CLICK ME</button>
+
+    <p class="personal-count">
+      you've clicked <span id="personal-count">0</span> time<span id="plural">s</span>
+    </p>
+  </div>
+</div>
+
+<script type="module" src="../../../ts/widgets/right_sidebar/clicker.ts"></script>

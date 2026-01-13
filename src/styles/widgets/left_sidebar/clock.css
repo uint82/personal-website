@@ -1,0 +1,73 @@
+.clock-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.clock-time {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  font-family: "Courier New", monospace;
+  text-align: center;
+}
+
+.calendar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+  margin-left: 0.625rem;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0.25rem;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-weight: 600;
+  padding: 0.25rem 0;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text);
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.calendar-day.empty {
+  visibility: hidden;
+}
+
+.calendar-day.today {
+  background-color: var(--accent);
+  color: var(--bg);
+  font-weight: 800;
+}
+
+.calendar-day:not(.empty):not(.today):hover {
+  background-color: var(--bg-light);
+}

@@ -1,0 +1,41 @@
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-light);
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+}
+
+.todo-item:hover {
+  background-color: var(--bg);
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.todo-checkbox {
+  width: 1.125rem;
+  height: 1.125rem;
+  cursor: not-allowed;
+  accent-color: var(--accent);
+  opacity: 0.5;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--text);
+  word-break: break-word;
+}

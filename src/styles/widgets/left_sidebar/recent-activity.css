@@ -1,0 +1,104 @@
+.activity-loading,
+.activity-error {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.activity-error {
+  color: #ef4444;
+}
+
+.commits-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.commit-item {
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px dashed var(--border);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.commit-item:hover {
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+
+.commit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.commit-sha {
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.commit-date {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.commit-message {
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.4;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.commit-changes {
+  font-size: 0.75rem;
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.additions {
+  color: #22c55e;
+}
+
+.separator {
+  color: var(--text-light);
+}
+
+.deletions {
+  color: #ef4444;
+}
+
+.activity-footer {
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border);
+}
+
+.language-breakdown {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+.language-segment {
+  height: 100%;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.language-segment:hover {
+  opacity: 0.8;
+}

@@ -1,0 +1,98 @@
+.changelog-widget .widget-content {
+  max-height: 350px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+}
+
+.changelog-widget .widget-content::-webkit-scrollbar {
+  width: 1px;
+}
+
+.changelog-widget .widget-content::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 2px;
+}
+
+.changelog-widget .widget-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.changelog-widget .widget-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-light);
+}
+
+.changelog-entry {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-radius: 6px;
+}
+
+.changelog-entry:last-child {
+  margin-bottom: 0;
+}
+
+.changelog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.changelog-version {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.changelog-date {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.changelog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.changelog-list li {
+  font-size: 0.8rem;
+  color: var(--text);
+  padding-left: 1.25rem;
+  position: relative;
+  line-height: 1.4;
+}
+
+.changelog-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.changelog-added::before {
+  background-color: #10b981;
+}
+
+.changelog-improved::before {
+  background-color: #3b82f6;
+}
+
+.changelog-fixed::before {
+  background-color: #f59e0b;
+}
+
+.changelog-removed::before {
+  background-color: #ef4444;
+}

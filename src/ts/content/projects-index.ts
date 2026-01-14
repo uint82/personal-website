@@ -4,11 +4,15 @@ export const projectsIndex = [
     path: "/content/projects/lazytype.md",
   },
   {
-    slug: "task-manager",
-    path: "/content/projects/task-manager.md",
+    slug: "arch-linux-rice",
+    path: "/content/projects/arch-linux-rice.md",
   },
   {
-    slug: "weather-app",
-    path: "/content/projects/weather-app.md",
+    slug: "sudoku-squad",
+    path: "/content/projects/sudoku-squad.md",
+  },
+  {
+    slug: "portfolio-template",
+    path: "/content/projects/portfolio-template.md",
   },
 ];

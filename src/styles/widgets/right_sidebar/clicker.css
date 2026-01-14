@@ -1,0 +1,187 @@
+.info-button {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  padding: 0.25rem;
+  transition: color var(--transition-fast);
+}
+
+.info-button:hover {
+  color: var(--accent);
+}
+
+.info-tooltip {
+  position: absolute;
+  top: 2.5rem;
+  right: 0.5rem;
+  width: 14rem;
+  padding: 0.75rem;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s,
+    visibility 0.2s;
+  z-index: 100;
+}
+
+.info-tooltip.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.info-tooltip p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.counter-display {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 4rem;
+}
+
+.counter-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  font-family: "Courier New", monospace;
+  transition: transform 0.3s;
+}
+
+.counter-value.glow {
+  transform: scale(1.1);
+}
+
+.sparkles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+  animation: sparkle 2s ease-out forwards;
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.5);
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.click-button {
+  display: block;
+  margin: 0.5rem auto 0.5rem auto;
+  width: 60%;
+  padding: 1rem 1.5rem;
+
+  background-color: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 12px;
+
+  box-shadow:
+    0 4px 0px 0px #b38600,
+    0 8px 15px rgba(0, 0, 0, 0.2);
+
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+
+  transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  top: 0;
+  overflow: visible;
+}
+
+.click-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0px 0px #b38600,
+    0 12px 20px rgba(0, 0, 0, 0.25);
+  filter: brightness(1.1);
+}
+
+.click-button:active:not(:disabled) {
+  top: 4px;
+  box-shadow:
+    0 0px 0px 0px #b38600,
+    0 2px 5px rgba(0, 0, 0, 0.3);
+  transform: translateY(0) scale(0.98);
+}
+
+.click-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  top: 4px;
+}
+
+@keyframes button-hit {
+  0% {
+    transform: scale(0.95);
+  }
+
+  40% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.personal-count {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text);
+  margin: 0;
+}

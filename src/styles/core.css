@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: "Andale Mono", monospace;
+
+  --container-max-width: 1200px;
+  --section-padding: 4rem;
+
+  --left-sidebar-min-width: 290px;
+  --left-sidebar-max-width: 290px;
+  --right-sidebar-min-width: 290px;
+  --right-sidebar-max-width: 290px;
+  --body-max-width: 800px;
+  --body-min-width: 800px;
+
+  --transition-fast: 150ms ease;
+  --transition-medium: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  cursor: url("../../static/cursor/someone-hand.png"), auto;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background:
+    linear-gradient(rgba(13, 26, 20, 0.85), rgba(13, 26, 20, 0.85)),
+    url("../../static/images/background/ctst-mag-a-marr-green-ancient-strome-tartan-front-72dpi-rgb.jpg");
+  background-position: center;
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--text);
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base);
+}
+
+button,
+a {
+  cursor: url("../../static/cursor/someone-point.png"), auto;
+}
+
+.music-player input[type="range"],
+.music-player .progress-bar {
+  cursor: url("../../static/cursor/someone-point.png"), auto;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  flex: 1;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  justify-content: center;
+}
+
+.body {
+  flex: 1 1 auto;
+  max-width: var(--body-max-width);
+  min-width: var(--body-min-width);
+  padding-bottom: 0.625rem;
+  position: relative;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.page .widget+.widget {
+  margin-top: 0.625rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.875rem;
+}
+
+p {
+  line-height: 1.5;
+  color: var(--text);
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+strong {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+.hash-prefix {
+  color: var(--accent);
+}
+
+.markdown-content {
+  color: var(--text);
+  line-height: 1.7;
+  word-wrap: break-word;
+}
+
+.markdown-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+  color: var(--text);
+}
+
+.markdown-content h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 1.2rem 0 0.8rem;
+  color: var(--text);
+}
+
+.markdown-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1rem 0 0.6rem;
+  color: var(--text);
+}
+
+.markdown-content p {
+  margin: 0.75rem 0;
+  color: var(--text);
+}
+
+.markdown-content a {
+  color: var(--link);
+  text-decoration: underline;
+}
+
+.markdown-content a:hover {
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+  /* Adds bullets back */
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+  /* Adds numbers back */
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+.markdown-content li {
+  margin: 0.4rem 0;
+  color: var(--text);
+}
+
+.markdown-content strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.markdown-content em {
+  font-style: italic;
+  color: var(--text-light);
+}
+
+.markdown-content code {
+  background-color: var(--bg-light);
+  color: var(--text);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background-color: var(--bg-light);
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--text-light);
+  margin: 1rem 0;
+  font-style: italic;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  color: var(--text);
+}
+
+.markdown-content th {
+  background-color: var(--bg-light);
+  font-weight: 600;
+  text-align: left;
+}
+
+/* RESPONSIVE LAYOUT */
+
+/* ANIMATIONS & EFFECTS */
+
+/* UTILITY CLASSES */
+
+/* FOCUS STYLES */

@@ -1,0 +1,107 @@
+.page[data-page="home"] .widget-content {
+  padding: 1rem;
+}
+
+.muted-note {
+  color: #888888;
+
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.featured-project-card {
+  background-color: var(--bg);
+  padding: 0;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.featured-project-card:hover {
+  border-color: var(--accent);
+}
+
+.featured-project-card .project-image {
+  width: 100%;
+  object-fit: contain;
+}
+
+.featured-project-card .project-info {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.featured-project-card .project-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.featured-project-card .project-description {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-light);
+}
+
+.featured-project-card .project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.featured-project-card .project-tags i {
+  font-size: 1.125rem;
+  margin-right: 0.25rem;
+}
+
+.featured-project-card .tag {
+  display: inline-block;
+  padding: 0.25rem 0.25rem;
+  background-color: var(--bg-light);
+  color: var(--tag-text);
+  font-size: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.featured-project-card .project-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.featured-project-card .project-link {
+  font-size: 0.875rem;
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.featured-project-card .project-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.page[data-page="home"] .widget-content p.text-gray-500 {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin: 1rem 0;
+}

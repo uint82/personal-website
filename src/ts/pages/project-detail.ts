@@ -1,17 +1,10 @@
 import Page, { type Options } from "./page";
-import { navigate } from "../controllers/route-controller";
 import { loadProjectMarkdown } from "../utils/frontmatter/projects";
 import { projectsIndex } from "../content/projects-index";
+import { getTagStyle } from "../utils/widgets/tag-colors";
 
 class ProjectDetailPage extends Page {
   private currentSlug: string = "";
-
-  private handleClick = (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (target.id === "back-to-projects") {
-      navigate("/projects");
-    }
-  };
 
   constructor() {
     super({
@@ -24,8 +17,6 @@ class ProjectDetailPage extends Page {
   }
 
   async beforeShow(options?: Options): Promise<void> {
-    document.removeEventListener("click", this.handleClick);
-
     if (options?.params?.slug) {
       this.currentSlug = options.params.slug;
     }
@@ -33,21 +24,21 @@ class ProjectDetailPage extends Page {
 
   async afterShow(): Promise<void> {
     await this.renderProject();
-    document.addEventListener("click", this.handleClick);
   }
 
-  async beforeHide(): Promise<void> {
-    document.removeEventListener("click", this.handleClick);
-  }
+  async beforeHide(): Promise<void> { }
 
   private async renderProject(): Promise<void> {
     const contentEl = document.getElementById("project-content");
+    const widgetTitleEl = this.element.querySelector(".widget-title"); //
+
     if (!contentEl) return;
 
     const projectInfo = projectsIndex.find((p) => p.slug === this.currentSlug);
 
     if (!projectInfo) {
       contentEl.innerHTML = "<p>Project not found.</p>";
+      if (widgetTitleEl) widgetTitleEl.textContent = "Project Not Found";
       return;
     }
 
@@ -62,6 +53,10 @@ class ProjectDetailPage extends Page {
 
     const { frontmatter, html } = result;
 
+    if (widgetTitleEl) {
+      widgetTitleEl.textContent = frontmatter.title.text; //
+    }
+
     if (!frontmatter.published) {
       contentEl.innerHTML = "<p>This project is not yet published.</p>";
       return;
@@ -74,9 +69,17 @@ class ProjectDetailPage extends Page {
           ${frontmatter.links
           .map(
             (link) => `
-            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-link">
-              <span class="link-icon ${link.icon}">${link.icon === "github" ? "→" : "↗"}</span>
-              ${link.text}
+            <a
+              href="${link.url}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="project-link"
+              title="${link.icon === "github" ? "GitHub" : "Live/Docs"}"
+            >
+              ${link.icon === "github"
+                ? '<i class="fa-brands fa-github"></i>'
+                : '<i class="fa-regular fa-file-lines"></i>'
+              }
             </a>
           `,
           )
@@ -92,13 +95,17 @@ class ProjectDetailPage extends Page {
           <h1>${frontmatter.title.text}</h1>
           <div class="project-meta">
             <span class="date">${frontmatter.date}</span>
-            ${frontmatter.featured ? '<span class="badge">Featured</span>' : ""}
-          </div>
-          <p class="description">${frontmatter.description}</p>
-          <div class="tags">
-            ${frontmatter.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
-          </div>
+            ${frontmatter.featured ? '<span class="badge"><i class="fa-solid fa-star" style="color: #ffd43b"></i> featured</span>' : ""}
           ${linksHtml}
+          </div>
+          <div class="tags">
+            <i class="fa-solid fa-tag"></i>${frontmatter.tags
+        .map(
+          (tag) =>
+            `<span class="tag" style="${getTagStyle(tag)}">${tag}</span>`,
+        )
+        .join("")}
+          </div>
         </header>
         <div class="markdown-content">
           ${html}

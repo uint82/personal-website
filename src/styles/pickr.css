@@ -1,0 +1,36 @@
+.pcr-app {
+  background: var(--bg) !important;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.pcr-app .pcr-interaction {
+  background: var(--bg) !important;
+  color: var(--text);
+  margin: 0 0 0 0 !important;
+}
+
+.pcr-app .pcr-interaction input {
+  background: var(--bg-light) !important;
+  color: #fff !important;
+  border-radius: 4px;
+  cursor: url("../../static/cursor/someone-point.png"), auto !important;
+}
+
+.pcr-app .pcr-interaction .pcr-save {
+  background: var(--bg) !important;
+  color: var(--bg) !important;
+  border: 0 !important;
+}
+
+.pcr-app .pcr-interaction .pcr-save:hover {
+  cursor: url("../../static/cursor/someone-hand.png"), auto !important;
+}
+
+.pcr-app .pcr-swatches>button {
+  cursor: url("../../static/cursor/someone-point.png"), auto !important;
+}
+
+.pickr .pcr-button {
+  cursor: url("../../static/cursor/someone-point.png"), auto !important;
+}

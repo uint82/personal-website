@@ -101,9 +101,8 @@ class BlogsPage extends Page {
           </div>
           <p class="description">${blog.description}</p>
           <div class="tags">
-            ${blog.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+            <i class="fa-solid fa-tag"></i>${blog.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
           </div>
-          <button class="read-more">Read More →</button>
         </article>
       `,
       )

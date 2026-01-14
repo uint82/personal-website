@@ -2,6 +2,7 @@ import Page from "./page";
 import { navigate } from "../controllers/route-controller";
 import { loadProjectMarkdown } from "../utils/frontmatter/projects";
 import { projectsIndex } from "../content/projects-index";
+import { getTagStyle } from "../utils/widgets/tag-colors";
 
 class ProjectsPage extends Page {
   private projectsList: Array<{
@@ -102,15 +103,17 @@ class ProjectsPage extends Page {
     listEl.innerHTML = this.projectsList
       .map(
         (project) => `
-        <div class="project-item ${project.featured ? "featured" : ""}" data-slug="${project.slug}">
+        <div class="project-item" data-slug="${project.slug}">
           ${project.image ? `<img src="${project.image.url}" alt="${project.image.alt}" class="project-image" />` : ""}
-          <h2>${project.title}</h2>
-          <p class="date">${project.date}</p>
+          <div class="project-header-row">
+            <h2>${project.title}</h2>
+            <p class="date">${project.date}</p>
+          </div>
+          ${project.featured ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> featured</span>' : ""}
           <p class="description">${project.description}</p>
           <div class="technologies">
-            ${project.tags.map((tag) => `<span class="tech-tag">${tag}</span>`).join("")}
+            <i class="fa-solid fa-tag"></i>${project.tags.map((tag) => `<span class="tech-tag" style="${getTagStyle(tag)}">${tag}</span>`).join("")}
           </div>
-          <button>View Project →</button>
         </div>
       `,
       )

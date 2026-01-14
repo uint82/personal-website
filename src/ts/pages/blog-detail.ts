@@ -1,17 +1,10 @@
 import Page, { type Options } from "./page";
-import { navigate } from "../controllers/route-controller";
 import { loadBlogMarkdown } from "../utils/frontmatter/blogs";
 import { blogsIndex } from "../content/blogs-index";
+import { generateSlabTitleHtml } from "../utils/widgets/slab-title";
 
 class BlogDetailPage extends Page {
   private currentSlug: string = "";
-
-  private handleClick = (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (target.id === "back-to-blogs") {
-      navigate("/blogs");
-    }
-  };
 
   constructor() {
     super({
@@ -24,8 +17,6 @@ class BlogDetailPage extends Page {
   }
 
   async beforeShow(options?: Options): Promise<void> {
-    document.removeEventListener("click", this.handleClick);
-
     if (options?.params?.slug) {
       this.currentSlug = options.params.slug;
     }
@@ -33,21 +24,21 @@ class BlogDetailPage extends Page {
 
   async afterShow(): Promise<void> {
     await this.renderBlog();
-    document.addEventListener("click", this.handleClick);
   }
 
-  async beforeHide(): Promise<void> {
-    document.removeEventListener("click", this.handleClick);
-  }
+  async beforeHide(): Promise<void> { }
 
   private async renderBlog(): Promise<void> {
     const contentEl = document.getElementById("blog-content");
+    const widgetTitleEl = this.element.querySelector(".widget-title");
+
     if (!contentEl) return;
 
     const blogInfo = blogsIndex.find((b) => b.slug === this.currentSlug);
 
     if (!blogInfo) {
       contentEl.innerHTML = "<p>Blog post not found.</p>";
+      if (widgetTitleEl) widgetTitleEl.textContent = "Blog Not Found";
       return;
     }
 
@@ -62,23 +53,34 @@ class BlogDetailPage extends Page {
 
     const { frontmatter, html } = result;
 
+    if (widgetTitleEl) {
+      widgetTitleEl.textContent = frontmatter.title.text;
+    }
+
     if (frontmatter.draft) {
       contentEl.innerHTML = "<p>This post is not yet published.</p>";
       return;
     }
 
+    const slabTitleHtml = generateSlabTitleHtml(
+      frontmatter.title.text,
+      frontmatter.title.config || "",
+      this.currentSlug,
+    );
+
     contentEl.innerHTML = `
       <article class="blog-post">
         <header class="blog-header">
-          <h1>${frontmatter.title.text}</h1>
+          ${slabTitleHtml}
           <div class="blog-meta">
             <span class="author">By ${frontmatter.author}</span>
             <span class="date">${frontmatter.published_at}</span>
             <span class="reading-time">${frontmatter.reading_time} min read</span>
           </div>
-          <p class="description">${frontmatter.description}</p>
           <div class="tags">
-            ${frontmatter.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+            <i class="fa-solid fa-tag"></i>${frontmatter.tags
+        .map((tag) => `<span class="tag">${tag}</span>`)
+        .join("")}
           </div>
         </header>
         <div class="markdown-content">

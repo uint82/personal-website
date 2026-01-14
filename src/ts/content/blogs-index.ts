@@ -1,14 +1,22 @@
 export const blogsIndex = [
   {
+    slug: "building-my-own-frontmatter-parser",
+    path: "/content/blogs/building-my-own-frontmatter-parser.md",
+  },
+  {
     slug: "my-first-post",
     path: "/content/blogs/my-first-post.md",
   },
   {
-    slug: "learning-typescript",
-    path: "/content/blogs/learning-typescript.md",
+    slug: "data-driven-mistakes",
+    path: "/content/blogs/data-driven-mistakes.md",
   },
   {
-    slug: "spa-routing",
+    slug: "building-spa-routing-from-scratch",
     path: "/content/blogs/spa-routing.md",
+  },
+  {
+    slug: "building-drawbook-without-backend",
+    path: "/content/blogs/building-drawbook-without-backend.md",
   },
 ];

@@ -1,0 +1,63 @@
+.stat-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  border-bottom: 1px dashed var(--border);
+  gap: 0.2rem;
+}
+
+.stat-row.no-border {
+  border-bottom: none;
+}
+
+.stat-row.no-padding-top {
+  padding-top: 0;
+}
+
+.stat-row.no-padding-bottom {
+  padding-bottom: 0;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.stat-value-container {
+  position: relative;
+  display: inline;
+}
+
+.stat-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  font-family: "Courier New", monospace;
+}
+
+.stat-value.loading {
+  opacity: 0.5;
+}
+
+.stat-value.updated {
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+    color: var(--accent);
+  }
+}

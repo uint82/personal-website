@@ -35,3 +35,19 @@
   color: var(--accent);
   opacity: 1;
 }
+
+@media (max-width: 640px) {
+  .footer-content {
+    flex-direction: column;
+
+    justify-content: center;
+    text-align: center;
+
+    gap: 1rem;
+  }
+
+  .footer-links {
+    justify-content: center;
+    gap: 1.25rem;
+  }
+}

@@ -65,27 +65,31 @@
   line-height: 1;
   position: absolute;
   top: -1px;
+
+  --start: -115%;
+  --mid: -40%;
+  --end: 150%;
 }
 
 @keyframes moveTrain {
   0% {
-    transform: translateX(-115%);
+    transform: translateX(var(--start));
   }
 
   16% {
-    transform: translateX(-40%);
+    transform: translateX(var(--mid));
   }
 
   36% {
-    transform: translateX(-40%);
+    transform: translateX(var(--mid));
   }
 
   76% {
-    transform: translateX(150%);
+    transform: translateX(var(--end));
   }
 
   100% {
-    transform: translateX(150%);
+    transform: translateX(var(--end));
   }
 }
 
@@ -98,4 +102,39 @@
 
 .come-along:hover {
   background-color: #e5c84a;
+}
+
+@media (max-width: 960px) {
+  .train {
+    --mid: 0%;
+    --end: 235%;
+  }
+}
+
+@media (max-width: 800px) {
+  .train {
+    --mid: -20%;
+    --end: 190%;
+  }
+}
+
+@media (max-width: 640px) {
+  .train {
+    --mid: -40%;
+    --end: 150%;
+  }
+}
+
+@media (max-width: 480px) {
+  .train {
+    --mid: 0%;
+    --end: 235%;
+  }
+}
+
+@media (max-width: 384px) {
+  .train {
+    --mid: -20%;
+    --end: 190%;
+  }
 }

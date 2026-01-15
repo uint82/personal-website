@@ -1,7 +1,7 @@
 export const blogsIndex = [
   {
     slug: "building-my-own-frontmatter-parser",
-    path: "/content/blogs/building-my-own-frontmatter-parser.md",
+    path: "../..//content/blogs/building-my-own-frontmatter-parser.md",
   },
   {
     slug: "my-first-post",

@@ -1,5 +1,6 @@
 .right-sidebar {
-  width: var(--right-sidebar-max-width);
+  min-width: var(--right-sidebar-min-width);
+  max-width: var(--right-sidebar-max-width);
   flex-shrink: 0;
   padding-left: 0.625rem;
   padding-top: 0.625rem;

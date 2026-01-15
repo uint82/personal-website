@@ -63,6 +63,15 @@
   gap: 0.375rem;
 }
 
+.changelog-list code {
+  background: rgba(125, 125, 125, 0.2);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+  color: var(--accent);
+}
+
 .changelog-list li {
   font-size: 0.8rem;
   color: var(--text);

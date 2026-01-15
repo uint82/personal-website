@@ -13,6 +13,10 @@
   line-height: 0;
   overflow: hidden;
   align-self: center;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 #drawbook-canvas {
@@ -21,14 +25,18 @@
   display: block;
   cursor: crosshair;
   touch-action: none;
+  background-color: #fff;
 }
 
 .controls-section {
-  min-width: 700px;
+  width: 100%;
+  max-width: 700px;
+
   align-self: center;
   padding: 20px;
   background: var(--bg-light);
   border: 2px solid var(--border);
+  box-sizing: border-box;
 }
 
 .controls-section::before {
@@ -48,12 +56,14 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
+  flex-wrap: wrap;
 }
 
 .control-group label {
   color: var(--text);
   font-size: 14px;
-  min-width: 100px;
+  min-width: 60px;
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: url("../../static/cursor/someone-hand.png"), auto;
@@ -69,21 +79,16 @@
 #color-picker {
   width: 60px;
   height: 35px;
+  display: inline-block;
   border: 2px solid var(--accent);
   background: var(--bg);
-}
-
-#color-picker::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-
-#color-picker::-webkit-color-swatch {
-  border: 1px solid var(--border);
+  cursor: pointer;
 }
 
 #brush-width {
   flex: 1;
   height: 8px;
+  min-width: 120px;
   background: var(--bg);
   border: 1px solid var(--border);
   outline: none;
@@ -110,10 +115,12 @@
 .button-group {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .page[data-page="drawbook"] .control-btn {
   flex: 1;
+  min-width: 40px;
   background: var(--bg);
   color: var(--text);
   border: 2px solid var(--border);
@@ -124,6 +131,7 @@
   letter-spacing: 2px;
   position: relative;
   border-radius: 0;
+  padding: 8px 12px;
 }
 
 .page[data-page="drawbook"] .control-btn:hover {
@@ -153,7 +161,7 @@
 .page[data-page="drawbook"] .tools-toggle {
   display: flex;
   gap: 0;
-  width: 100%;
+  min-width: 80px;
 }
 
 .page[data-page="drawbook"] .tools-toggle .control-btn {
@@ -202,7 +210,7 @@
 
 .drawing-gallery {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 15px;
 }
 
@@ -226,4 +234,33 @@
   font-size: 0.7rem;
   color: var(--text-light);
   font-family: monospace;
+}
+
+@media (max-width: 768px) {
+  .controls-section {
+    padding: 10px;
+  }
+
+  .control-group {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .button-group {
+    width: 100%;
+  }
+
+  .button-group > button {
+    flex-basis: 40%;
+    flex-grow: 1;
+  }
+
+  .control-group {
+    justify-content: space-between;
+  }
+
+  .drawing-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
 }

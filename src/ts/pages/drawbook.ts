@@ -206,25 +206,29 @@ class DrawbookPage extends Page {
     }
   }
 
+  private getPointerPos(clientX: number, clientY: number) {
+    if (!this.canvas) return { x: 0, y: 0 };
+    const rect = this.canvas.getBoundingClientRect();
+    return {
+      x: (clientX - rect.left) * (this.canvas.width / rect.width),
+      y: (clientY - rect.top) * (this.canvas.height / rect.height),
+    };
+  }
+
   private startDrawing(e: MouseEvent): void {
     if (!this.ctx || !this.canvas) return;
 
     this.isDrawing = true;
     this.ctx.beginPath();
 
-    const rect = this.canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
+    const { x, y } = this.getPointerPos(e.clientX, e.clientY);
     this.ctx.moveTo(x, y);
   }
 
   private draw(e: MouseEvent): void {
     if (!this.isDrawing || !this.ctx || !this.canvas) return;
 
-    const rect = this.canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const { x, y } = this.getPointerPos(e.clientX, e.clientY);
 
     this.ctx.lineTo(x, y);
 
@@ -259,9 +263,7 @@ class DrawbookPage extends Page {
   private handleMouseEnter(e: MouseEvent): void {
     if (!this.isDrawing || !this.ctx || !this.canvas) return;
 
-    const rect = this.canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const { x, y } = this.getPointerPos(e.clientX, e.clientY);
 
     this.ctx.beginPath();
     this.ctx.moveTo(x, y);
@@ -274,10 +276,8 @@ class DrawbookPage extends Page {
     this.isDrawing = true;
     this.ctx.beginPath();
 
-    const rect = this.canvas.getBoundingClientRect();
     const touch = e.touches[0];
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
+    const { x, y } = this.getPointerPos(touch.clientX, touch.clientY);
 
     this.ctx.moveTo(x, y);
   }
@@ -286,10 +286,8 @@ class DrawbookPage extends Page {
     e.preventDefault();
     if (!this.isDrawing || !this.ctx || !this.canvas) return;
 
-    const rect = this.canvas.getBoundingClientRect();
     const touch = e.touches[0];
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
+    const { x, y } = this.getPointerPos(touch.clientX, touch.clientY);
 
     this.ctx.strokeStyle =
       this.activeTool === "eraser" ? "white" : this.currentColor;

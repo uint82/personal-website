@@ -44,3 +44,21 @@
 .nav-links a.active {
   color: var(--accent);
 }
+
+@media (max-width: 480px) {
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .nav-links li {
+    flex-grow: 1;
+    display: flex;
+  }
+
+  .nav-links a {
+    width: 100%;
+    justify-content: center;
+  }
+}

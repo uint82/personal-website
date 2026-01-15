@@ -18,7 +18,6 @@ const PERSONAL_COUNT_KEY = "waste-clicks-personal";
 
 let globalCount = 0;
 let personalCount = 0;
-let isLoading = true;
 let eventSource: EventSource | null = null;
 let lastAnimationTime = 0;
 const ANIMATION_THROTTLE = 75;
@@ -103,7 +102,6 @@ async function fetchCurrentCount() {
   } catch (error) {
     console.error("Failed to fetch count:", error);
   } finally {
-    isLoading = false;
     if (loadingEl) loadingEl.style.display = "none";
     if (globalCountEl) globalCountEl.style.display = "block";
     if (clickButton) clickButton.disabled = false;

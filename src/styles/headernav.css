@@ -42,7 +42,7 @@
   background-color: currentColor;
   margin-left: 2px;
   animation: blink 3s cubic-bezier(0.2, 1, 0.8, 1) infinite;
-  vertical-align: baseline;
+  vertical-align: middle;
 }
 
 @keyframes blink {

@@ -24,6 +24,8 @@ const ANIMATION_THROTTLE = 75;
 const MAX_SPARKLES = 20;
 let sparkleCount = 0;
 
+let audioContext: AudioContext | null = null;
+
 let globalCountEl: HTMLElement;
 let personalCountEl: HTMLElement;
 let pluralEl: HTMLElement;
@@ -195,8 +197,15 @@ function triggerButtonShake() {
 
 function playCoinSound() {
   try {
-    const audioContext = new (window.AudioContext ||
-      (window as any).webkitAudioContext)();
+    if (!audioContext) {
+      audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
+    }
+
+    if (audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+
     const now = audioContext.currentTime;
 
     const osc1 = audioContext.createOscillator();
@@ -222,7 +231,9 @@ function playCoinSound() {
     osc2.start(now + 0.02);
     osc1.stop(now + 0.35);
     osc2.stop(now + 0.3);
-  } catch (e) { }
+  } catch (e) {
+    console.error("Audio playback failed", e);
+  }
 }
 
 function createParticleExplosion() {

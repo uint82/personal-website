@@ -19,4 +19,8 @@ export const blogsIndex = [
     slug: "building-drawbook-without-backend",
     path: "/content/blogs/building-drawbook-without-backend.md",
   },
+  {
+    slug: "embracing-simplicity-a-journey-in-software-customization",
+    path: "/content/blogs/embracing-simplicity-a-journey-in-software-customization.md",
+  },
 ];

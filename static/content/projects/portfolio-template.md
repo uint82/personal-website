@@ -75,7 +75,7 @@ Everything is managed through Django's powerful admin interface:
 ### Backend
 
 - **Django** - Robust Python web framework powering the entire site
-- **SQLite** - Database for storing all content 
+- **SQLite** - Database for storing all content
 - **Django Admin** - Built-in admin panel for content management
 - **SMTP** - Email protocol integration for contact form functionality
 
@@ -234,7 +234,7 @@ This project took Django from "I've heard of it" to "I can build real applicatio
 
 Visit [abroor.pythonanywhere.com](https://abroor.pythonanywhere.com) to see the live site. It's my actual portfolio—real projects, real blog posts, real about section.
 
-The [GitHub repo](https://github.com/uint82/portfolio) is public if you want to see how it's built or use it as a starting point for your own Django learning journey.
+The [GitHub repo](https://github.com/uint82/portofolio) is public if you want to see how it's built or use it as a starting point for your own Django learning journey.
 
 **This was my first Django project, and it taught me that the best way to learn a framework is to build something real with it.** Not a tutorial project, not a toy app—something you'll actually use and maintain.
 

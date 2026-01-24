@@ -23,4 +23,8 @@ export const blogsIndex = [
     slug: "embracing-simplicity-a-journey-in-software-customization",
     path: "/content/blogs/embracing-simplicity-a-journey-in-software-customization.md",
   },
+  {
+    slug: "declutter-your-html-svg-icons-paths",
+    path: "/content/blogs/declutter-your-html-svg-icons-paths.md",
+  },
 ];

@@ -27,4 +27,8 @@ export const blogsIndex = [
     slug: "declutter-your-html-svg-icons-paths",
     path: "/content/blogs/declutter-your-html-svg-icons-paths.md",
   },
+  {
+    slug: "my-journey-to-daily-drive-linux",
+    path: "/content/blogs/my-journey-to-daily-driving-linux.md",
+  },
 ];

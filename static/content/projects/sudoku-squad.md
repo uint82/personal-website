@@ -5,7 +5,7 @@ title:
 description: "Real-time multiplayer Sudoku game where up to 10 players can collaborate on the same puzzle. Built with Django and React, featuring live cursors, quick emotes, and clever username-based persistence."
 date: "Marh 5, 2025"
 published: true
-featured: true
+featured: false
 tags: ["django", "djangorestfreamwork", "python", "react", "wbsockets", "redis", "realtime"]
 image:
   url: "/images/projects/sudoku_squad.jpg"

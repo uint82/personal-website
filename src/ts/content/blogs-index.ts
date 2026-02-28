@@ -31,4 +31,8 @@ export const blogsIndex = [
     slug: "my-journey-to-daily-drive-linux",
     path: "/content/blogs/my-journey-to-daily-driving-linux.md",
   },
+  {
+    slug: "moving-the-windows-users-directory-to-another-partition",
+    path: "/content/blogs/moving-the-windows-users-directory-to-another-partition.md"
+  },
 ];

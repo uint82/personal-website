@@ -236,6 +236,28 @@
   font-family: monospace;
 }
 
+.gallery-pending {
+  aspect-ratio: 4/3;
+  background: repeating-linear-gradient(45deg,
+      var(--bg) 0px,
+      var(--bg) 10px,
+      var(--bg-light) 10px,
+      var(--bg-light) 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pending-badge {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
 @media (max-width: 768px) {
   .controls-section {
     padding: 10px;
@@ -251,7 +273,7 @@
     width: 100%;
   }
 
-  .button-group > button {
+  .button-group>button {
     flex-basis: 40%;
     flex-grow: 1;
   }

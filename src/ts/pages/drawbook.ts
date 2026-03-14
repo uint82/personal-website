@@ -447,18 +447,31 @@ class DrawbookPage extends Page {
       rows.reverse().forEach((row) => {
         const columns = row.split(",");
         if (columns.length < 2) return;
+
         const timestamp = columns[0].trim();
         const imageUrl = columns[1].trim().replace(/"/g, "");
+        const status = columns[2]?.trim().toLowerCase().replace(/"/g, "") || "pending";
 
-        if (imageUrl.startsWith("http")) {
-          const container = document.createElement("div");
-          container.className = "gallery-item";
+        if (!imageUrl.startsWith("http")) return;
+
+        const container = document.createElement("div");
+        container.className = "gallery-item";
+
+        if (status === "approved") {
           container.innerHTML = `
-            <img src="${imageUrl}" alt="drawing" loading="lazy">
-            <p class="timestamp">${timestamp}</p>
-          `;
-          gallery.appendChild(container);
+    <img src="${imageUrl}" alt="drawing" loading="lazy">
+    <p class="timestamp">${timestamp}</p>
+  `;
+        } else {
+          container.innerHTML = `
+    <div class="gallery-pending">
+      <span class="pending-badge">Under Review</span>
+    </div>
+    <p class="timestamp">${timestamp}</p>
+  `;
         }
+
+        gallery.appendChild(container);
       });
 
       if (gallery.children.length === 0) {

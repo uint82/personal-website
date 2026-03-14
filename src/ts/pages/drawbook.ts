@@ -364,9 +364,7 @@ class DrawbookPage extends Page {
   private async submitDrawing(): Promise<void> {
     if (this.isSubmitting || !this.canvas) return;
 
-    const submitBtn = document.getElementById(
-      "submit-btn",
-    ) as HTMLButtonElement;
+    const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
     const statusEl = document.getElementById("upload-status");
 
     if (!submitBtn || !statusEl) return;
@@ -391,7 +389,10 @@ class DrawbookPage extends Page {
         body: formData,
       });
 
-      if (!workerResponse.ok) throw new Error("Worker upload failed");
+      if (!workerResponse.ok) {
+        const errData = await workerResponse.json().catch(() => ({}));
+        throw new Error(errData.error || "Worker upload failed");
+      }
 
       const { imageUrl } = await workerResponse.json();
       if (!imageUrl) throw new Error("No image URL returned from worker");
@@ -418,9 +419,10 @@ class DrawbookPage extends Page {
         this.clear();
         statusEl.textContent = "";
       }, 2000);
+
     } catch (error) {
       console.error("Upload error:", error);
-      statusEl.textContent = "✗ Error uploading image";
+      statusEl.textContent = `✗ ${error instanceof Error ? error.message : "Error uploading image"}`;
       statusEl.className = "upload-status error";
     } finally {
       this.isSubmitting = false;

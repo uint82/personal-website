@@ -49,8 +49,8 @@ async function typeText(el: HTMLElement, text: string, speed = 45): Promise<void
 }
 
 async function runAnimation() {
-  await typeText(userEl, "ping abroor", 55);
-  await typeText(hostEl, "@arch", 55);
+  await typeText(userEl, "ping uint32", 55);
+  await typeText(hostEl, "@archlinux", 55);
   await sleep(250);
 
   line2El.classList.remove("status-line-hidden");

@@ -19,7 +19,7 @@ function init() {
   hostEl = document.getElementById("status-cmd-host") as HTMLElement;
   cursorEl = document.getElementById("status-cursor") as HTMLElement;
 
-  if (!terminalEl) return;
+  if (!terminalEl || !userEl || !hostEl) return;
 
   userEl.textContent = "";
   hostEl.textContent = "";
@@ -55,16 +55,15 @@ async function runAnimation() {
 
   line2El.classList.remove("status-line-hidden");
 
-  const fakePing = randomPing();
-  const [status] = await Promise.all([
+  const [result] = await Promise.all([
     fetchStatus(),
     typeText(outputEl, "pinging...", 40),
   ]);
 
-  await sleep(300);
+  await sleep(150);
 
-  if (status === "online") {
-    await typeText(outputEl, `response: ${fakePing}ms — online `, 30);
+  if (result.status === "online") {
+    await typeText(outputEl, `response: ${result.ping}ms — online `, 30);
     dotEl.className = "status-dot status-dot-online";
     outputEl.title = "Online — feel free to reach out!";
     terminalEl.classList.add("status-terminal-online");
@@ -76,19 +75,20 @@ async function runAnimation() {
   }
 }
 
-async function fetchStatus(): Promise<Status> {
+async function fetchStatus(): Promise<{ status: Status; ping: number }> {
   try {
+    const start = performance.now();
     const res = await fetch(STATUS_URL);
-    if (!res.ok) return "offline";
+    const ping = Math.round(performance.now() - start);
+    if (!res.ok) return { status: "offline", ping };
     const data = await res.json();
-    return data.status === "online" ? "online" : "offline";
+    return {
+      status: data.status === "online" ? "online" : "offline",
+      ping,
+    };
   } catch {
-    return "offline";
+    return { status: "offline", ping: 0 };
   }
-}
-
-function randomPing(): number {
-  return Math.floor(Math.random() * 34) + 8;
 }
 
 export function initStatus() {

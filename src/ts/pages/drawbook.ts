@@ -5,6 +5,11 @@ interface DrawingState {
   imageData: ImageData;
 }
 
+interface GalleryImage {
+  url: string;
+  timestamp: string;
+}
+
 class DrawbookPage extends Page {
   private canvas: HTMLCanvasElement | null = null;
   private ctx: CanvasRenderingContext2D | null = null;
@@ -23,6 +28,10 @@ class DrawbookPage extends Page {
 
   private pickr: Pickr | null = null;
 
+  private galleryImages: GalleryImage[] = [];
+  private currentLightboxIndex: number = -1;
+  private boundHandleKeydown: ((e: KeyboardEvent) => void) | null = null;
+
   constructor() {
     super({
       name: "drawbook",
@@ -34,6 +43,7 @@ class DrawbookPage extends Page {
   async afterShow(): Promise<void> {
     this.initCanvas();
     this.initControls();
+    this.initLightbox();
     this.loadGallery();
   }
 
@@ -121,7 +131,6 @@ class DrawbookPage extends Page {
             "#000000",
             "#FFFFFF",
             "#FF0000",
-            "#00FF00",
             "#0000FF",
             "#FFFF00",
             "#00FFFF",
@@ -204,6 +213,113 @@ class DrawbookPage extends Page {
     if (submitBtn) {
       submitBtn.onclick = () => this.submitDrawing();
     }
+  }
+
+  private initLightbox(): void {
+    const closeBtn = document.getElementById("lightbox-close");
+    const prevBtn = document.getElementById("lightbox-prev");
+    const nextBtn = document.getElementById("lightbox-next");
+    const lightbox = document.getElementById("lightbox");
+
+    closeBtn?.addEventListener("click", () => this.closeLightbox());
+
+    prevBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.navigateLightbox(-1);
+    });
+
+    nextBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.navigateLightbox(1);
+    });
+
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) this.closeLightbox();
+    });
+
+    this.boundHandleKeydown = this.handleLightboxKeydown.bind(this);
+    window.addEventListener("keydown", this.boundHandleKeydown);
+  }
+
+  private async openLightbox(index: number): Promise<void> {
+    this.currentLightboxIndex = index;
+
+    const imageObj = this.galleryImages[index];
+    if (!imageObj) return;
+
+    const img = new Image();
+    img.src = imageObj.url;
+    img.decoding = "async";
+
+    await img.decode().catch(() => { });
+
+    const imgEl = document.getElementById("lightbox-img") as HTMLImageElement;
+    const timeEl = document.getElementById("lightbox-timestamp");
+
+    if (imgEl) imgEl.src = imageObj.url;
+    if (timeEl) timeEl.textContent = imageObj.timestamp;
+
+    document.getElementById("lightbox")?.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+
+    this.preloadNearby();
+  }
+  private preloadNearby(): void {
+    const next = this.galleryImages[this.currentLightboxIndex + 1];
+    const prev = this.galleryImages[this.currentLightboxIndex - 1];
+
+    [next, prev].forEach(img => {
+      if (!img) return;
+      const i = new Image();
+      i.src = img.url;
+    });
+  }
+
+  private closeLightbox(): void {
+    document.getElementById("lightbox")?.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+  private async navigateLightbox(direction: number): Promise<void> {
+    if (this.galleryImages.length === 0) return;
+
+    this.currentLightboxIndex += direction;
+
+    if (this.currentLightboxIndex < 0) {
+      this.currentLightboxIndex = this.galleryImages.length - 1;
+    } else if (this.currentLightboxIndex >= this.galleryImages.length) {
+      this.currentLightboxIndex = 0;
+    }
+
+    const imageObj = this.galleryImages[this.currentLightboxIndex];
+    if (!imageObj) return;
+
+    const img = new Image();
+    img.src = imageObj.url;
+    await img.decode().catch(() => { });
+
+    this.updateLightboxContent();
+    this.preloadNearby();
+  }
+
+  private updateLightboxContent(): void {
+    const imageObj = this.galleryImages[this.currentLightboxIndex];
+    if (!imageObj) return;
+
+    const imgEl = document.getElementById("lightbox-img") as HTMLImageElement;
+    const timeEl = document.getElementById("lightbox-timestamp");
+
+    if (imgEl) imgEl.src = imageObj.url;
+    if (timeEl) timeEl.textContent = imageObj.timestamp;
+  }
+
+  private handleLightboxKeydown(e: KeyboardEvent): void {
+    const lightbox = document.getElementById("lightbox");
+    if (!lightbox || lightbox.classList.contains("hidden")) return;
+
+    if (e.key === "Escape") this.closeLightbox();
+    if (e.key === "ArrowLeft") this.navigateLightbox(-1);
+    if (e.key === "ArrowRight") this.navigateLightbox(1);
   }
 
   private getPointerPos(clientX: number, clientY: number) {
@@ -444,6 +560,9 @@ class DrawbookPage extends Page {
       const rows = csvText.split("\n").slice(1);
 
       gallery.innerHTML = "";
+      this.galleryImages = [];
+      let approvedIndex = 0;
+
       rows.reverse().forEach((row) => {
         const columns = row.split(",");
         if (columns.length < 2) return;
@@ -458,17 +577,23 @@ class DrawbookPage extends Page {
         container.className = "gallery-item";
 
         if (status === "approved") {
+          const currentIdx = approvedIndex++;
+          this.galleryImages.push({ url: imageUrl, timestamp });
+
           container.innerHTML = `
-    <img src="${imageUrl}" alt="drawing" loading="lazy">
-    <p class="timestamp">${timestamp}</p>
-  `;
+            <img src="${imageUrl}" loading="lazy" decoding="async" data-index="${currentIdx}">
+            <p class="timestamp">${timestamp}</p>
+          `;
+
+          const imgEl = container.querySelector("img");
+          imgEl?.addEventListener("click", () => this.openLightbox(currentIdx));
         } else {
           container.innerHTML = `
-    <div class="gallery-pending">
-      <span class="pending-badge">Under Review</span>
-    </div>
-    <p class="timestamp">${timestamp}</p>
-  `;
+            <div class="gallery-pending">
+              <span class="pending-badge">Under Review</span>
+            </div>
+            <p class="timestamp">${timestamp}</p>
+          `;
         }
 
         gallery.appendChild(container);
@@ -486,6 +611,9 @@ class DrawbookPage extends Page {
   async beforeHide(): Promise<void> {
     if (this.boundStopDrawing) {
       window.removeEventListener("mouseup", this.boundStopDrawing);
+    }
+    if (this.boundHandleKeydown) {
+      window.removeEventListener("keydown", this.boundHandleKeydown);
     }
     if (this.pickr) {
       this.pickr.hide();

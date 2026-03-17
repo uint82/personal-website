@@ -5,6 +5,7 @@ import "@simonwep/pickr/dist/themes/nano.min.css";
 import * as Header from "./pages/header";
 import * as Footer from "./pages/footer";
 import * as Nav from "./pages/nav";
+import "./utils/status";
 
 // initialized once
 // persists across client-side route changes

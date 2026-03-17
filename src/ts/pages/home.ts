@@ -4,6 +4,7 @@ import {
   renderFeaturedProjects,
 } from "../utils/widgets/featured-projects";
 import { navigate } from "../controllers/route-controller";
+import { initStatus } from "../utils/status";
 
 class HomePage extends Page {
   private handleClick = (e: Event) => {
@@ -20,6 +21,8 @@ class HomePage extends Page {
 
   async beforeShow(): Promise<void> {
     document.removeEventListener("click", this.handleClick);
+
+    initStatus();
 
     const featuredProjectsContainer = document.querySelector(
       '[data-page="home"] .widget:nth-child(2) .widget-content',

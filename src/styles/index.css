@@ -12,6 +12,7 @@
 @import "./drawbook.css";
 @import "./pickr.css";
 @import "./status.css";
+@import "./loader.css";
 @import "./widgets/left_sidebar/clock.css";
 @import "./widgets/left_sidebar/music-player.css";
 @import "./widgets/left_sidebar/recent-activity.css";

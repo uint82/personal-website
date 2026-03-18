@@ -8,6 +8,7 @@ import * as PageCounter from "../pages/counter";
 import * as PageGuestbook from "../pages/guestbook";
 import * as Page404 from "../pages/404";
 import * as PageDrawbook from "../pages/drawbook";
+import * as Progress from "../utils/loader";
 
 type PageName =
   | "home"
@@ -52,6 +53,8 @@ export async function change(
     return;
   }
 
+  Progress.start();
+
   if (currentPage) {
     await currentPage.beforeHide();
     currentPage.hide();
@@ -63,4 +66,6 @@ export async function change(
   await page.afterShow();
 
   currentPage = page;
+
+  Progress.done();
 }

@@ -1,0 +1,32 @@
+.loader-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 1px !important;
+  min-height: unset !important;
+  z-index: 9999;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 4px var(--accent);
+  pointer-events: none;
+
+  transition: width 0.25s ease;
+  opacity: 0;
+}
+
+.loader-bar.loader-active {
+  opacity: 1;
+}
+
+.loader-bar.loader-complete {
+  width: 100% !important;
+  transition: width 0.15s ease;
+}
+
+.loader-bar.loader-fade {
+  opacity: 0;
+  transition:
+    width 0.15s ease,
+    opacity 0.3s ease 0.1s;
+}

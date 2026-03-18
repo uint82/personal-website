@@ -47,6 +47,20 @@ class DrawbookPage extends Page {
     this.loadGallery();
   }
 
+  private getCursorSVG(): string {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <!-- white outline layer (drawn first, thicker) -->
+      <line x1="12" y1="2" x2="12" y2="22" stroke="white" stroke-width="3.5"/>
+      <line x1="2" y1="12" x2="22" y2="12" stroke="white" stroke-width="3.5"/>
+      <circle cx="12" cy="12" r="2" fill="none" stroke="white" stroke-width="3.5"/>
+      <!-- black fill layer (drawn on top, thinner) -->
+      <line x1="12" y1="2" x2="12" y2="22" stroke="black" stroke-width="1.5"/>
+      <line x1="2" y1="12" x2="22" y2="12" stroke="black" stroke-width="1.5"/>
+      <circle cx="12" cy="12" r="2" fill="none" stroke="black" stroke-width="1.5"/>
+    </svg>`;
+    return `url('data:image/svg+xml;utf8,${encodeURIComponent(svg)}') 12 12, crosshair`;
+  }
+
   private initCanvas(): void {
     const canvasEl = document.getElementById(
       "drawbook-canvas",
@@ -65,6 +79,8 @@ class DrawbookPage extends Page {
 
     this.ctx.fillStyle = "white";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.canvas.style.cursor = this.getCursorSVG();
 
     if (this.history.length === 0) {
       this.saveState();
@@ -102,7 +118,8 @@ class DrawbookPage extends Page {
         this.activeTool = "brush";
         brushBtn.classList.add("active");
         eraserBtn?.classList.remove("active");
-        if (this.canvas) this.canvas.style.cursor = "crosshair";
+        if (this.canvas)
+          this.canvas.style.cursor = this.getCursorSVG();
       };
     }
 
@@ -111,7 +128,8 @@ class DrawbookPage extends Page {
         this.activeTool = "eraser";
         eraserBtn.classList.add("active");
         brushBtn?.classList.remove("active");
-        if (this.canvas) this.canvas.style.cursor = "cell";
+        if (this.canvas)
+          this.canvas.style.cursor = this.getCursorSVG();
       };
     }
 
@@ -156,6 +174,9 @@ class DrawbookPage extends Page {
           const hexColor = color.toHEXA().toString();
           this.currentColor = hexColor;
           localStorage.setItem("drawbook-color", this.currentColor);
+          if (this.activeTool === "brush" && this.canvas) {
+            this.canvas.style.cursor = this.getCursorSVG();
+          }
           if (this.activeTool === "eraser") {
             brushBtn?.click();
           }
@@ -264,6 +285,7 @@ class DrawbookPage extends Page {
 
     this.preloadNearby();
   }
+
   private preloadNearby(): void {
     const next = this.galleryImages[this.currentLightboxIndex + 1];
     const prev = this.galleryImages[this.currentLightboxIndex - 1];

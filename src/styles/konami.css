@@ -1,0 +1,79 @@
+#konami-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+#konami-overlay.konami-visible {
+  opacity: 1;
+}
+
+#konami-popup {
+  position: relative;
+  background-color: var(--bg);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  min-width: 320px;
+  max-width: 480px;
+  overflow: hidden;
+  box-shadow: 0 0 32px rgba(242, 208, 36, 0.15);
+}
+
+.konami-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.konami-line {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  font-family: monospace;
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+.konami-line-hidden {
+  visibility: hidden;
+}
+
+.konami-line:not(.konami-line-hidden) {
+  visibility: visible;
+}
+
+.konami-prompt {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.konami-dismiss {
+  position: relative;
+  z-index: 2;
+  margin-top: 1.25rem;
+  font-size: 0.7rem;
+  color: var(--text-light);
+  opacity: 0;
+  text-align: center;
+  letter-spacing: 0.05em;
+  transition: opacity 0.4s ease;
+}
+
+.konami-dismiss.konami-dismiss-visible {
+  opacity: 0.5;
+}

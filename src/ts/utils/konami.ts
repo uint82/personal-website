@@ -8,28 +8,6 @@ const KONAMI = [
 
 let sequence: string[] = [];
 
-const TAP_COUNT = 7;
-const TAP_WINDOW = 2000; // in ms
-
-let tapCount = 0;
-let tapTimer: ReturnType<typeof setTimeout> | null = null;
-
-function initTapTrigger(): void {
-  document.addEventListener("touchend", () => {
-
-    tapCount++;
-
-    if (tapTimer) clearTimeout(tapTimer);
-    tapTimer = setTimeout(() => { tapCount = 0; }, TAP_WINDOW);
-
-    if (tapCount >= TAP_COUNT) {
-      tapCount = 0;
-      if (tapTimer) clearTimeout(tapTimer);
-      void showPopup();
-    }
-  });
-}
-
 function detectOS(): string {
   const ua = navigator.userAgent.toLowerCase();
   const platform = navigator.platform?.toLowerCase() ?? "";
@@ -104,7 +82,7 @@ async function showPopup(): Promise<void> {
       <span class="konami-prompt">❯</span>
       <span id="konami-line2"></span>
     </div>
-    <div class="konami-dismiss" id="konami-dismiss">— tap or press any key to dismiss —</div>
+    <div class="konami-dismiss" id="konami-dismiss">— press any key to dismiss —</div>
   `;
 
   overlay.appendChild(popup);
@@ -132,12 +110,10 @@ async function showPopup(): Promise<void> {
     overlay.addEventListener("transitionend", () => overlay.remove(), { once: true });
     document.removeEventListener("keydown", dismiss);
     overlay.removeEventListener("click", dismiss);
-    overlay.removeEventListener("touchend", dismiss);
   }
 
   document.addEventListener("keydown", dismiss, { once: true });
   overlay.addEventListener("click", dismiss);
-  overlay.addEventListener("touchend", dismiss);
 }
 
 function handleKey(e: KeyboardEvent): void {
@@ -151,5 +127,4 @@ function handleKey(e: KeyboardEvent): void {
 
 export function initKonami(): void {
   document.addEventListener("keydown", handleKey);
-  initTapTrigger();
 }

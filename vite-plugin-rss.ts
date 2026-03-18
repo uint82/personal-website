@@ -5,9 +5,10 @@ import { marked } from "marked";
 import { extractFrontmatter } from "./src/ts/utils/frontmatter/base";
 
 const SITE_URL = "https://abroor.vercel.app";
-const SITE_TITLE = "Hilmi Abroor";
+const SITE_TITLE = "Abroor's blog";
 const SITE_DESCRIPTION = "Log files containing a lot of nonsense will be generated here intermittently.";
-const AUTHOR = "Hilmi Abroor";
+const AUTHOR_NAME = "Hilmi Abroor";
+const AUTHOR_EMAIL = "abroorhilmi@gmail.com";
 
 const blogsIndex = [
   { slug: "building-my-own-frontmatter-parser", path: "static/content/blogs/building-my-own-frontmatter-parser.md" },
@@ -35,6 +36,12 @@ function escapeXml(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
+function makeAbsoluteUrls(html: string): string {
+  return html
+    .replace(/href="(?!http|mailto|#)([^"]+)"/g, `href="${SITE_URL}/$1"`)
+    .replace(/src="(?!http)([^"]+)"/g, `src="${SITE_URL}/$1"`);
+}
+
 interface BlogEntry {
   slug: string;
   title: string;
@@ -54,10 +61,10 @@ function generateRSS(blogs: BlogEntry[]): string {
       <link>${SITE_URL}/blogs/${blog.slug}</link>
       <guid isPermaLink="true">${SITE_URL}/blogs/${blog.slug}</guid>
       <description>${escapeXml(blog.description)}</description>
-      <author>${escapeXml(blog.author)}</author>
+      <author>${blog.author} (${AUTHOR_NAME})</author>
       <pubDate>${toRFC822(blog.published_at)}</pubDate>
       ${blog.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join("\n      ")}
-      <content:encoded><![CDATA[${blog.html}]]></content:encoded>
+      <content:encoded><![CDATA[${makeAbsoluteUrls(blog.html)}]]></content:encoded>
     </item>`,
     )
     .join("\n");
@@ -71,7 +78,7 @@ function generateRSS(blogs: BlogEntry[]): string {
     <link>${SITE_URL}</link>
     <description>${escapeXml(SITE_DESCRIPTION)}</description>
     <language>en-us</language>
-    <managingEditor>${escapeXml(AUTHOR)}</managingEditor>
+    <managingEditor>${AUTHOR_EMAIL} (${AUTHOR_NAME})</managingEditor>
     <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${items}
@@ -108,7 +115,7 @@ export default function rssPlugin(): Plugin {
           description: data.description ?? "",
           published_at: data.published_at ?? "",
           tags: data.tags ?? [],
-          author: data.author ?? AUTHOR,
+          author: data.author ?? AUTHOR_EMAIL,
           html,
         });
       }

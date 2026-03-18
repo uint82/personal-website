@@ -2,7 +2,7 @@
 title:
   text: "Declutter Your SVG Icons"
   config: "5ci 2 3.5 5c"
-description: "Stop drowning in inline SVG code. Learn how to organize your icons using the <symbol> and <use> tags to keep your HTML clean and maintainable."
+description: "Stop drowning in inline SVG code. Learn how to organize your icons using the symbol and use tags to keep your HTML clean and maintainable."
 published_at: "January 24, 2026"
 tags: ["technology", "webdev"]
 author: "abror"

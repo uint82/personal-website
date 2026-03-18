@@ -63,14 +63,14 @@ async function runAnimation() {
   await sleep(150);
 
   if (result.status === "online") {
-    await typeText(outputEl, `response: ${result.ping}ms — online `, 30);
+    await typeText(outputEl, `response: ${result.ping}ms — ONLINE `, 30);
     dotEl.className = "status-dot status-dot-online";
-    outputEl.title = "Online — feel free to reach out!";
+    outputEl.title = "Live status — my laptop is on and connected";
     terminalEl.classList.add("status-terminal-online");
   } else {
-    await typeText(outputEl, "request timed out — offline ", 30);
+    await typeText(outputEl, "host unreachable — offline ", 30);
     dotEl.className = "status-dot status-dot-offline";
-    outputEl.title = "Offline — away from keyboard";
+    outputEl.title = "Live status — my laptop is off or disconnected";
     terminalEl.classList.add("status-terminal-offline");
   }
 }

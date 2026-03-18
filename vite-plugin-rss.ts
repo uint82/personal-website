@@ -48,7 +48,6 @@ interface BlogEntry {
   description: string;
   published_at: string;
   tags: string[];
-  author: string;
   html: string;
 }
 
@@ -61,7 +60,7 @@ function generateRSS(blogs: BlogEntry[]): string {
       <link>${SITE_URL}/blogs/${blog.slug}</link>
       <guid isPermaLink="true">${SITE_URL}/blogs/${blog.slug}</guid>
       <description>${escapeXml(blog.description)}</description>
-      <author>${blog.author} (${AUTHOR_NAME})</author>
+      <author>${AUTHOR_EMAIL} (${AUTHOR_NAME})</author>
       <pubDate>${toRFC822(blog.published_at)}</pubDate>
       ${blog.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join("\n      ")}
       <content:encoded><![CDATA[${makeAbsoluteUrls(blog.html)}]]></content:encoded>
@@ -115,7 +114,6 @@ export default function rssPlugin(): Plugin {
           description: data.description ?? "",
           published_at: data.published_at ?? "",
           tags: data.tags ?? [],
-          author: data.author ?? AUTHOR_EMAIL,
           html,
         });
       }

@@ -21,8 +21,11 @@ const PRESENCE_PING_URL = PRESENCE_WORKER_URL
 const PRESENCE_COUNT_URL = PRESENCE_WORKER_URL
   ? `${PRESENCE_WORKER_URL}/api/presence/count`
   : "";
+const PRESENCE_LEAVE_URL = PRESENCE_WORKER_URL
+  ? `${PRESENCE_WORKER_URL}/api/presence/leave`
+  : "";
 const PING_INTERVAL_MS = 30_000;
-const POLL_INTERVAL_MS = 30_000;
+const POLL_INTERVAL_MS = 1_000;
 
 const VISIT_TRACKED_KEY = "site-visit-tracked";
 const TIME_SPENT_KEY = "site-time-spent";
@@ -83,6 +86,7 @@ function init() {
     stopTimer();
     saveTimeSpent();
     stopPresence();
+    leavePresence();
   });
 }
 
@@ -125,6 +129,14 @@ async function fetchOnlineCount() {
   } catch (error) {
     console.warn("Failed to fetch online count:", error);
   }
+}
+
+function leavePresence() {
+  if (!PRESENCE_LEAVE_URL || !sessionId) return;
+  navigator.sendBeacon(
+    PRESENCE_LEAVE_URL,
+    JSON.stringify({ sessionId })
+  );
 }
 
 function updateOnlineCount(count: number) {
@@ -263,6 +275,7 @@ function handleVisibilityChange() {
     stopTimer();
     saveTimeSpent();
     stopPresence();
+    leavePresence();
     if (eventSource) {
       eventSource.close();
       eventSource = null;

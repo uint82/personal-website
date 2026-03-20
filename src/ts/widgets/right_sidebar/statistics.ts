@@ -2,6 +2,7 @@ const ABACUS_URL =
   import.meta.env.VITE_ABACUS_URL || "https://abacus.jasoncameron.dev";
 const ABACUS_NAMESPACE = import.meta.env.VITE_ABACUS_NAMESPACE_VISIT;
 const ABACUS_KEY = import.meta.env.VITE_ABACUS_KEY_VISIT;
+const PRESENCE_WORKER_URL = import.meta.env.VITE_PRESENCE_URL || "";
 
 const isConfigured = ABACUS_NAMESPACE && ABACUS_KEY;
 const ENDPOINT_GET = isConfigured
@@ -14,19 +15,34 @@ const ENDPOINT_STREAM = isConfigured
   ? `${ABACUS_URL}/stream/${ABACUS_NAMESPACE}/${ABACUS_KEY}`
   : "";
 
+const PRESENCE_PING_URL = PRESENCE_WORKER_URL
+  ? `${PRESENCE_WORKER_URL}/api/presence/ping`
+  : "";
+const PRESENCE_COUNT_URL = PRESENCE_WORKER_URL
+  ? `${PRESENCE_WORKER_URL}/api/presence/count`
+  : "";
+const PING_INTERVAL_MS = 30_000;
+const POLL_INTERVAL_MS = 30_000;
+
 const VISIT_TRACKED_KEY = "site-visit-tracked";
 const TIME_SPENT_KEY = "site-time-spent";
+const SESSION_ID_KEY = "site-session-id";
 
 let visitorCount = 0;
 let eventSource: EventSource | null = null;
 let timeSpentSeconds = 0;
 let timerInterval: number | null = null;
+let pingInterval: number | null = null;
+let pollInterval: number | null = null;
+let sessionId = "";
 
 let visitorCountEl: HTMLElement;
 let loadingEl: HTMLElement;
 let createdDateEl: HTMLElement;
 let updatedDateEl: HTMLElement;
 let timeSpentEl: HTMLElement;
+let onlineCountEl: HTMLElement;
+let onlineDotEl: HTMLElement;
 
 function init() {
   visitorCountEl = document.getElementById("visitor-count") as HTMLElement;
@@ -34,13 +50,14 @@ function init() {
   createdDateEl = document.getElementById("created-date") as HTMLElement;
   updatedDateEl = document.getElementById("updated-date") as HTMLElement;
   timeSpentEl = document.getElementById("time-spent") as HTMLElement;
+  onlineCountEl = document.getElementById("online-count") as HTMLElement;
+  onlineDotEl = document.getElementById("online-dot") as HTMLElement;
 
   if (!visitorCountEl || !timeSpentEl) {
     console.error("Required elements not found");
     return;
   }
 
-  // fafety check
   if (!isConfigured) {
     console.warn("Visitor stats configuration missing. Check your .env file.");
     if (loadingEl) loadingEl.style.display = "none";
@@ -48,28 +65,94 @@ function init() {
     visitorCountEl.style.display = "block";
     initTimeTracking();
     setStaticDates();
+    initPresence();
     return;
   }
 
   setStaticDates();
-
   initTimeTracking();
-
   fetchCurrentCount();
-
   setupStream();
-
   trackVisit();
+  initPresence();
 
   document.addEventListener("visibilitychange", handleVisibilityChange);
 
   window.addEventListener("beforeunload", () => {
-    if (eventSource) {
-      eventSource.close();
-    }
+    if (eventSource) eventSource.close();
     stopTimer();
     saveTimeSpent();
+    stopPresence();
   });
+}
+
+function getOrCreateSessionId(): string {
+  let id = sessionStorage.getItem(SESSION_ID_KEY);
+  if (!id) {
+    id = crypto.randomUUID();
+    sessionStorage.setItem(SESSION_ID_KEY, id);
+  }
+  return id;
+}
+
+async function pingPresence() {
+  if (!PRESENCE_PING_URL) return;
+  try {
+    const response = await fetch(PRESENCE_PING_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      if (typeof data.count === "number") {
+        updateOnlineCount(data.count);
+      }
+    }
+  } catch (error) {
+    console.warn("Presence ping failed:", error);
+  }
+}
+
+async function fetchOnlineCount() {
+  if (!PRESENCE_COUNT_URL) return;
+  try {
+    const response = await fetch(PRESENCE_COUNT_URL);
+    if (response.ok) {
+      const data = await response.json();
+      updateOnlineCount(data.count ?? 0);
+    }
+  } catch (error) {
+    console.warn("Failed to fetch online count:", error);
+  }
+}
+
+function updateOnlineCount(count: number) {
+  if (onlineCountEl) {
+    onlineCountEl.textContent = count.toString();
+  }
+  if (onlineDotEl) {
+    onlineDotEl.classList.remove("pulse");
+    void onlineDotEl.offsetWidth;
+    onlineDotEl.classList.add("pulse");
+  }
+}
+
+function initPresence() {
+  if (!PRESENCE_WORKER_URL) return;
+
+  sessionId = getOrCreateSessionId();
+
+  pingPresence();
+  fetchOnlineCount();
+
+  pingInterval = window.setInterval(pingPresence, PING_INTERVAL_MS);
+  pollInterval = window.setInterval(fetchOnlineCount, POLL_INTERVAL_MS);
+}
+
+function stopPresence() {
+  if (pingInterval) { clearInterval(pingInterval); pingInterval = null; }
+  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
 }
 
 function setStaticDates() {
@@ -90,7 +173,6 @@ function initTimeTracking() {
   timeSpentSeconds = savedTime ? parseInt(savedTime, 10) : 0;
 
   updateTimeDisplay();
-
   startTimer();
 }
 
@@ -100,10 +182,7 @@ function startTimer() {
   timerInterval = window.setInterval(() => {
     timeSpentSeconds++;
     updateTimeDisplay();
-
-    if (timeSpentSeconds % 5 === 0) {
-      saveTimeSpent();
-    }
+    if (timeSpentSeconds % 5 === 0) saveTimeSpent();
   }, 1000);
 }
 
@@ -183,12 +262,16 @@ function handleVisibilityChange() {
   if (document.hidden) {
     stopTimer();
     saveTimeSpent();
+    stopPresence();
     if (eventSource) {
       eventSource.close();
       eventSource = null;
     }
   } else {
     startTimer();
+    pingPresence();
+    pingInterval = window.setInterval(pingPresence, PING_INTERVAL_MS);
+    pollInterval = window.setInterval(fetchOnlineCount, POLL_INTERVAL_MS);
 
     if (isConfigured) {
       fetchCurrentCount();

@@ -33,6 +33,10 @@ export const blogsIndex = [
   },
   {
     slug: "moving-the-windows-users-directory-to-another-partition",
-    path: "/content/blogs/moving-the-windows-users-directory-to-another-partition.md"
+    path: "/content/blogs/moving-the-windows-users-directory-to-another-partition.md",
   },
+  {
+  	slug: "managing-android-permissions-via-adb",
+  	path: "/content/blogs/managing-android-permissions-via-adb.md",
+  }
 ];

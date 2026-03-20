@@ -20,7 +20,7 @@ const blogsIndex = [
   { slug: "declutter-your-html-svg-icons-paths", path: "static/content/blogs/declutter-your-html-svg-icons-paths.md" },
   { slug: "my-journey-to-daily-drive-linux", path: "static/content/blogs/my-journey-to-daily-driving-linux.md" },
   { slug: "moving-the-windows-users-directory-to-another-partition", path: "static/content/blogs/moving-the-windows-users-directory-to-another-partition.md" },
-];
+  { slug: "managing-android-permissions-via-adb", path: "static/content/blogs/managing-android-permissions-via-adb.md" }];
 
 function toRFC822(dateStr: string): string {
   const date = new Date(dateStr);

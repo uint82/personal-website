@@ -1,5 +1,5 @@
 const SITE_NAME = "Hilmi Abroor";
-const TAGLINE = "Full stack developer";
+const TAGLINE = "";
 
 const capitalize = (str: string) =>
   str
@@ -8,7 +8,7 @@ const capitalize = (str: string) =>
     .join(" ");
 
 const titleMap: Record<string, string> = {
-  "/": `${SITE_NAME} | ${TAGLINE}`,
+  "/": TAGLINE ? `${SITE_NAME} | ${TAGLINE}` : SITE_NAME,
   "/about": "About",
   "/blogs": "Blogs",
   "/projects": "Projects",

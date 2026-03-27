@@ -1,0 +1,288 @@
+[
+  {
+    "version": "v2.4.0",
+    "date": "Mar 19, 2026",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added loader bar on top of page content during navigation."
+      },
+      {
+        "type": "added",
+        "text": "Added on-site statistic."
+      },
+      {
+        "type": "added",
+        "text": "Added RSS feed."
+      },
+      {
+        "type": "improved",
+        "text": "Use custom svg cursor when drawing for cross-platform visibility."
+      },
+      {
+        "type": "added",
+        "text": "Added my website button."
+      },
+      {
+        "type": "improved",
+        "text": "Moved footer to bottom of right sidebar."
+      }
+    ]
+  },
+  {
+    "version": "v2.3.0",
+    "date": "Mar 18, 2026",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added live status indicator to home page."
+      },
+      {
+        "type": "added",
+        "text": "Added lightbox to inspect website gallery image."
+      },
+      {
+        "type": "added",
+        "text": "Added moderation system for drawbook submissions. Drawings now require approval before appearing in the gallery."
+      }
+    ]
+  },
+  {
+    "version": "v2.2.2",
+    "date": "Jan 15, 2026",
+    "changes": [
+      {
+        "type": "improved",
+        "text": "Implemented responsive design breakpoints to ensure seamless rendering across mobile viewports."
+      },
+      {
+        "type": "fixed",
+        "text": "Fixed canvas coordinate calculation mismatch on smaller screens."
+      },
+      {
+        "type": "fixed",
+        "text": "Fixed `AudioContext` resource exhaustion on mobile browsers. Implemented a singleton pattern for the sound engine to prevent hitting hardware limits."
+      }
+    ]
+  },
+  {
+    "version": "v2.2.1",
+    "date": "Jan 10, 2026",
+    "changes": [
+      {
+        "type": "fixed",
+        "text": "Fixed Drawbook undo/redo executing twice per click."
+      },
+      {
+        "type": "improved",
+        "text": "Refactored Drawbook event listeners to prevent duplication."
+      }
+    ]
+  },
+  {
+    "version": "v2.2.0",
+    "date": "Jan 9, 2026",
+    "changes": [
+      {
+        "type": "improved",
+        "text": "Project tags are now colorful."
+      },
+      {
+        "type": "improved",
+        "text": "Blog titles now use a slab font."
+      }
+    ]
+  },
+  {
+    "version": "v2.1.0",
+    "date": "Jan 7, 2026",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added new package highlight js and markdown highlight."
+      },
+      {
+        "type": "improved",
+        "text": "Improved markdown code highlighting in blog and projects frontmatter."
+      }
+    ]
+  },
+  {
+    "version": "v2.0.0",
+    "date": "Jan 6, 2026",
+    "changes": [
+      {
+        "type": "improved",
+        "text": "Moving the widget style to its own css file."
+      },
+      {
+        "type": "added",
+        "text": "Added surf time tracking to the statistics widget to count how long users spend on the website."
+      }
+    ]
+  },
+  {
+    "version": "v1.9.0",
+    "date": "Jan 3, 2026",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added recent activity widget."
+      },
+      {
+        "type": "added",
+        "text": "Added latest blogs widget."
+      },
+      {
+        "type": "fixed",
+        "text": "Fixed Drawbook color div not persisting after route navigation."
+      }
+    ]
+  },
+  {
+    "version": "v1.8.0",
+    "date": "Jan 1, 2026",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added featured projects in home page."
+      },
+      {
+        "type": "improved",
+        "text": "Improve clock widget by adding calendar."
+      }
+    ]
+  },
+  {
+    "version": "v1.7.0",
+    "date": "Dec 28, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added snow background image for welcome widget."
+      },
+      {
+        "type": "improved",
+        "text": "Improve blogs page style."
+      },
+      {
+        "type": "improved",
+        "text": "Improve blog detail style."
+      }
+    ]
+  },
+  {
+    "version": "v1.6.0",
+    "date": "Dec 27, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added drawbook page."
+      },
+      {
+        "type": "improved",
+        "text": "Uses global click listener in route-controller."
+      },
+      {
+        "type": "improved",
+        "text": "Improve project detail style."
+      }
+    ]
+  },
+  {
+    "version": "v1.5.0",
+    "date": "Dec 26, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added music player widget."
+      },
+      {
+        "type": "fixed",
+        "text": "Fixed DOM reset bug on 404 pages."
+      },
+      {
+        "type": "added",
+        "text": "Added website to-do list widget."
+      }
+    ]
+  },
+  {
+    "version": "v1.4.0",
+    "date": "Dec 25, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added breadcrumbs."
+      },
+      {
+        "type": "added",
+        "text": "Added header news ticker."
+      },
+      {
+        "type": "added",
+        "text": "Added clock widget."
+      }
+    ]
+  },
+  {
+    "version": "v1.3.0",
+    "date": "Dec 21, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added website statistic widget."
+      },
+      {
+        "type": "added",
+        "text": "Added flag counter widget."
+      }
+    ]
+  },
+  {
+    "version": "v1.2.0",
+    "date": "Dec 20, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added dark mode and light mode support."
+      },
+      {
+        "type": "added",
+        "text": "Added chatbox widget."
+      },
+      {
+        "type": "added",
+        "text": "Added changelog widget."
+      }
+    ]
+  },
+  {
+    "version": "v1.1.0",
+    "date": "Dec 18, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Added clicker widget."
+      },
+      {
+        "type": "added",
+        "text": "Added Welcome Widget."
+      },
+      {
+        "type": "improved",
+        "text": "Enhanced performance."
+      }
+    ]
+  },
+  {
+    "version": "v1.0.0",
+    "date": "Dec 15, 2025",
+    "changes": [
+      {
+        "type": "added",
+        "text": "Initial release."
+      }
+    ]
+  }
+]

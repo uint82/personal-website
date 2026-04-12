@@ -1,42 +1,45 @@
-const ABACUS_URL =
-  import.meta.env.VITE_ABACUS_URL || "https://abacus.jasoncameron.dev";
-const ABACUS_NAMESPACE = import.meta.env.VITE_ABACUS_NAMESPACE_VISIT;
-const ABACUS_KEY = import.meta.env.VITE_ABACUS_KEY_VISIT;
+const WORKER_URL = import.meta.env.VITE_COUNTER_URL;
+const WORKER_NAMESPACE = import.meta.env.VITE_COUNTER_NAMESPACE_VISIT;
+const WORKER_KEY = import.meta.env.VITE_COUNTER_KEY_VISIT;
 const PRESENCE_WORKER_URL = import.meta.env.VITE_PRESENCE_URL || "";
 
-const isConfigured = ABACUS_NAMESPACE && ABACUS_KEY;
+const isConfigured = !!(WORKER_URL && WORKER_NAMESPACE && WORKER_KEY);
+
+const WS_BASE = isConfigured ? WORKER_URL.replace(/^http/, "ws") : "";
+
 const ENDPOINT_GET = isConfigured
-  ? `${ABACUS_URL}/get/${ABACUS_NAMESPACE}/${ABACUS_KEY}`
+  ? `${WORKER_URL}/get/${WORKER_NAMESPACE}/${WORKER_KEY}`
   : "";
 const ENDPOINT_HIT = isConfigured
-  ? `${ABACUS_URL}/hit/${ABACUS_NAMESPACE}/${ABACUS_KEY}`
+  ? `${WORKER_URL}/hit/${WORKER_NAMESPACE}/${WORKER_KEY}`
   : "";
-const ENDPOINT_STREAM = isConfigured
-  ? `${ABACUS_URL}/stream/${ABACUS_NAMESPACE}/${ABACUS_KEY}`
+const ENDPOINT_WS = isConfigured
+  ? `${WS_BASE}/ws/${WORKER_NAMESPACE}/${WORKER_KEY}`
   : "";
 
 const PRESENCE_PING_URL = PRESENCE_WORKER_URL
   ? `${PRESENCE_WORKER_URL}/api/presence/ping`
   : "";
-const PRESENCE_COUNT_URL = PRESENCE_WORKER_URL
-  ? `${PRESENCE_WORKER_URL}/api/presence/count`
-  : "";
 const PRESENCE_LEAVE_URL = PRESENCE_WORKER_URL
   ? `${PRESENCE_WORKER_URL}/api/presence/leave`
   : "";
+
 const PING_INTERVAL_MS = 30_000;
-const POLL_INTERVAL_MS = 1_000;
+const HIT_TIMEOUT_MS = 10_000;
+const RECONNECT_BASE_MS = 1_000;
+const RECONNECT_MAX_MS = 30_000;
 
 const VISIT_TRACKED_KEY = "site-visit-tracked";
 const TIME_SPENT_KEY = "site-time-spent";
 const SESSION_ID_KEY = "site-session-id";
 
 let visitorCount = 0;
-let eventSource: EventSource | null = null;
+let socket: WebSocket | null = null;
+let reconnectAttempts = 0;
+let reconnectTimer: number | null = null;
 let timeSpentSeconds = 0;
 let timerInterval: number | null = null;
 let pingInterval: number | null = null;
-let pollInterval: number | null = null;
 let sessionId = "";
 
 let visitorCountEl: HTMLElement;
@@ -75,19 +78,161 @@ function init() {
   setStaticDates();
   initTimeTracking();
   fetchCurrentCount();
-  setupStream();
+  setupWebSocket();
   trackVisit();
   initPresence();
 
   document.addEventListener("visibilitychange", handleVisibilityChange);
 
   window.addEventListener("beforeunload", () => {
-    if (eventSource) eventSource.close();
+    if (socket) socket.close();
+    if (reconnectTimer) clearTimeout(reconnectTimer);
     stopTimer();
     saveTimeSpent();
     stopPresence();
     leavePresence();
   });
+}
+
+async function fetchCurrentCount() {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), HIT_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(ENDPOINT_GET, { signal: controller.signal });
+    clearTimeout(timeout);
+
+    if (response.ok) {
+      const data = await response.json();
+      visitorCount = data.value || 0;
+      updateVisitorCount();
+    } else if (response.status === 404) {
+      visitorCount = 0;
+      updateVisitorCount();
+    }
+  } catch (error) {
+    clearTimeout(timeout);
+    if ((error as Error).name !== "AbortError") {
+      console.error("Failed to fetch visitor count:", error);
+    }
+  } finally {
+    if (loadingEl) loadingEl.style.display = "none";
+    if (visitorCountEl) visitorCountEl.style.display = "block";
+  }
+}
+
+function setupWebSocket() {
+  if (!isConfigured) return;
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
+  }
+
+  try {
+    socket = new WebSocket(ENDPOINT_WS);
+
+    socket.onopen = () => {
+      reconnectAttempts = 0;
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        const incoming: number = data.value ?? 0;
+
+        if (incoming !== visitorCount) {
+          visitorCount = incoming;
+          updateVisitorCount(true);
+        }
+      } catch (error) {
+        console.error("WebSocket message parse error:", error);
+      }
+    };
+
+    socket.onerror = () => {
+      socket?.close();
+    };
+
+    socket.onclose = () => {
+      socket = null;
+      scheduleReconnect();
+    };
+  } catch (error) {
+    console.error("Failed to setup WebSocket:", error);
+    scheduleReconnect();
+  }
+}
+
+function scheduleReconnect() {
+  if (reconnectTimer) return;
+
+  const delay = Math.min(
+    RECONNECT_BASE_MS * 2 ** reconnectAttempts,
+    RECONNECT_MAX_MS
+  );
+  reconnectAttempts++;
+  console.log(`WebSocket reconnecting in ${delay}ms (attempt ${reconnectAttempts})`);
+
+  reconnectTimer = window.setTimeout(() => {
+    reconnectTimer = null;
+    setupWebSocket();
+  }, delay);
+}
+
+async function trackVisit() {
+  if (!isConfigured) return;
+
+  const tracked = sessionStorage.getItem(VISIT_TRACKED_KEY);
+  if (tracked) {
+    console.log("Visit already tracked this session");
+    return;
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), HIT_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(ENDPOINT_HIT, { signal: controller.signal });
+    clearTimeout(timeout);
+
+    if (response.ok) {
+      sessionStorage.setItem(VISIT_TRACKED_KEY, "true");
+      console.log("Visit tracked successfully");
+    }
+  } catch (error) {
+    clearTimeout(timeout);
+    if ((error as Error).name !== "AbortError") {
+      console.error("Failed to track visit:", error);
+    }
+  }
+}
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    stopTimer();
+    saveTimeSpent();
+    stopPresence();
+    leavePresence();
+    if (socket) {
+      socket.close();
+      socket = null;
+    }
+    if (reconnectTimer) {
+      clearTimeout(reconnectTimer);
+      reconnectTimer = null;
+    }
+  } else {
+    startTimer();
+    initPresence();
+
+    if (isConfigured) {
+      fetchCurrentCount();
+      reconnectAttempts = 0;
+      if (!socket || socket.readyState === WebSocket.CLOSED) {
+        setupWebSocket();
+      }
+    }
+  }
 }
 
 function getOrCreateSessionId(): string {
@@ -118,25 +263,9 @@ async function pingPresence() {
   }
 }
 
-async function fetchOnlineCount() {
-  if (!PRESENCE_COUNT_URL) return;
-  try {
-    const response = await fetch(PRESENCE_COUNT_URL);
-    if (response.ok) {
-      const data = await response.json();
-      updateOnlineCount(data.count ?? 0);
-    }
-  } catch (error) {
-    console.warn("Failed to fetch online count:", error);
-  }
-}
-
 function leavePresence() {
   if (!PRESENCE_LEAVE_URL || !sessionId) return;
-  navigator.sendBeacon(
-    PRESENCE_LEAVE_URL,
-    JSON.stringify({ sessionId })
-  );
+  navigator.sendBeacon(PRESENCE_LEAVE_URL, JSON.stringify({ sessionId }));
 }
 
 function updateOnlineCount(count: number) {
@@ -152,19 +281,16 @@ function updateOnlineCount(count: number) {
 
 function initPresence() {
   if (!PRESENCE_WORKER_URL) return;
-
   sessionId = getOrCreateSessionId();
-
   pingPresence();
-  fetchOnlineCount();
-
   pingInterval = window.setInterval(pingPresence, PING_INTERVAL_MS);
-  pollInterval = window.setInterval(fetchOnlineCount, POLL_INTERVAL_MS);
 }
 
 function stopPresence() {
-  if (pingInterval) { clearInterval(pingInterval); pingInterval = null; }
-  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+  if (pingInterval) {
+    clearInterval(pingInterval);
+    pingInterval = null;
+  }
 }
 
 function setStaticDates() {
@@ -183,14 +309,12 @@ function setStaticDates() {
 function initTimeTracking() {
   const savedTime = localStorage.getItem(TIME_SPENT_KEY);
   timeSpentSeconds = savedTime ? parseInt(savedTime, 10) : 0;
-
   updateTimeDisplay();
   startTimer();
 }
 
 function startTimer() {
   if (timerInterval) return;
-
   timerInterval = window.setInterval(() => {
     timeSpentSeconds++;
     updateTimeDisplay();
@@ -219,103 +343,7 @@ function formatTime(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
-
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-}
-
-async function fetchCurrentCount() {
-  if (!isConfigured) return;
-
-  try {
-    const response = await fetch(ENDPOINT_GET);
-    if (response.ok) {
-      const data = await response.json();
-      visitorCount = data.value || 0;
-      updateVisitorCount();
-    } else if (response.status === 404) {
-      visitorCount = 0;
-      updateVisitorCount();
-    }
-  } catch (error) {
-    console.error("Failed to fetch visitor count:", error);
-  } finally {
-    if (loadingEl) loadingEl.style.display = "none";
-    if (visitorCountEl) visitorCountEl.style.display = "block";
-  }
-}
-
-function setupStream() {
-  if (!isConfigured) return;
-
-  try {
-    eventSource = new EventSource(ENDPOINT_STREAM);
-
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.value > visitorCount) {
-          visitorCount = data.value;
-          updateVisitorCount(true);
-        }
-      } catch (error) {
-        console.error("Stream parse error:", error);
-      }
-    };
-
-    eventSource.onerror = (error) => {
-      console.error("Stream error:", error);
-    };
-  } catch (error) {
-    console.error("Failed to setup stream:", error);
-  }
-}
-
-function handleVisibilityChange() {
-  if (document.hidden) {
-    stopTimer();
-    saveTimeSpent();
-    stopPresence();
-    leavePresence();
-    if (eventSource) {
-      eventSource.close();
-      eventSource = null;
-    }
-  } else {
-    startTimer();
-    pingPresence();
-    pingInterval = window.setInterval(pingPresence, PING_INTERVAL_MS);
-    pollInterval = window.setInterval(fetchOnlineCount, POLL_INTERVAL_MS);
-
-    if (isConfigured) {
-      fetchCurrentCount();
-      if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
-        setupStream();
-      }
-    }
-  }
-}
-
-async function trackVisit() {
-  if (!isConfigured) return;
-
-  const tracked = sessionStorage.getItem(VISIT_TRACKED_KEY);
-
-  if (tracked) {
-    console.log("Visit already tracked this session");
-    return;
-  }
-
-  try {
-    const response = await fetch(ENDPOINT_HIT);
-    if (response.ok) {
-      sessionStorage.setItem(VISIT_TRACKED_KEY, "true");
-      console.log("Visit tracked successfully");
-      visitorCount++;
-      updateVisitorCount(true);
-    }
-  } catch (error) {
-    console.error("Failed to track visit:", error);
-  }
 }
 
 function updateVisitorCount(animate = false) {

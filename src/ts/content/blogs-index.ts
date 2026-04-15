@@ -36,7 +36,11 @@ export const blogsIndex = [
     path: "/content/blogs/moving-the-windows-users-directory-to-another-partition.md",
   },
   {
-  	slug: "managing-android-permissions-via-adb",
-  	path: "/content/blogs/managing-android-permissions-via-adb.md",
+    slug: "managing-android-permissions-via-adb",
+    path: "/content/blogs/managing-android-permissions-via-adb.md",
+  },
+  {
+    slug: "why-i-use-neovim",
+    path: "/content/blogs/why-i-use-neovim.md",
   }
 ];

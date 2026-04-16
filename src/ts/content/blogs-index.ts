@@ -42,5 +42,9 @@ export const blogsIndex = [
   {
     slug: "why-i-use-neovim",
     path: "/content/blogs/why-i-use-neovim.md",
+  },
+  {
+    slug: "what-is-cloudflare-durable-object",
+    path: "/content/blogs/what-is-cloudflare-durable-object.md",
   }
 ];

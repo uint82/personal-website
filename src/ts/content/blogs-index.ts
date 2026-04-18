@@ -46,5 +46,9 @@ export const blogsIndex = [
   {
     slug: "what-is-cloudflare-durable-object",
     path: "/content/blogs/what-is-cloudflare-durable-object.md",
+  },
+  {
+    slug: "dotfiles-are-documentation",
+    path: "/content/blogs/dotfiles-are-documentation.md",
   }
 ];

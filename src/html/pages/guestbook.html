@@ -4,32 +4,51 @@
       <h2 class="widget-title">𓂃✍︎ Guestbook</h2>
     </div>
     <div class="widget-content">
-      <div class="iframe-container">
-        <iframe src="https://abroor.atabook.org/" title="Guestbook" frameborder="0" allowfullscreen>
-        </iframe>
+      <div class="guestbook-container">
+
+        <div class="gb-form-section">
+          <div class="gb-form-row">
+            <div class="gb-field">
+              <label for="gb-name">Name <span class="gb-required">*</span></label>
+              <input type="text" id="gb-name" class="gb-input" placeholder="Your name" maxlength="30"
+                autocomplete="name" />
+              <span class="gb-counter" id="gb-name-counter">0 / 30</span>
+            </div>
+            <div class="gb-field">
+              <label for="gb-website">Website <span class="gb-optional">(optional)</span></label>
+              <input type="text" id="gb-website" class="gb-input" placeholder="yourwebsite.com" maxlength="100"
+                autocomplete="url" />
+            </div>
+          </div>
+
+          <div class="gb-form-row">
+            <div class="gb-field gb-field--full">
+              <label for="gb-message">Message <span class="gb-required">*</span></label>
+              <textarea id="gb-message" class="gb-input gb-textarea" placeholder="Leave a message..." maxlength="300"
+                rows="4"></textarea>
+              <span class="gb-counter" id="gb-message-counter">0 / 300</span>
+            </div>
+          </div>
+
+          <div class="gb-form-row gb-form-row--submit">
+            <button id="gb-submit" class="gb-submit-btn">Sign Guestbook</button>
+            <span id="gb-status" class="gb-status"></span>
+          </div>
+        </div>
+
+        <div class="gb-feed-section">
+          <div class="gb-feed-header">
+            <span class="gb-feed-label">▼ ENTRIES ▼</span>
+          </div>
+          <div id="gb-feed" class="gb-feed">
+            <p class="gb-loading">Loading entries...</p>
+          </div>
+          <div id="gb-load-more-wrapper" class="gb-load-more-wrapper" hidden>
+            <button id="gb-load-more" class="gb-load-more-btn">Load more</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
-
-<style>
-  .iframe-container {
-    width: 100%;
-    height: 1800px;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .iframe-container iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-
-  .page[data-page="guestbook"] .widget-content {
-    width: 100%;
-    max-width: 758px;
-    margin: 0 auto;
-  }
-</style>

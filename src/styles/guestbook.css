@@ -1,0 +1,326 @@
+.guestbook-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 20px;
+  color: var(--text);
+  width: 100%;
+  max-width: 758px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.gb-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border: 2px solid var(--border);
+  background: var(--bg-light);
+}
+
+.gb-form-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.gb-form-row--submit {
+  align-items: center;
+  gap: 14px;
+}
+
+.gb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 160px;
+  position: relative;
+}
+
+.gb-field--full {
+  flex-basis: 100%;
+  min-width: 0;
+}
+
+.gb-field label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-light);
+}
+
+.gb-required {
+  color: var(--accent);
+}
+
+.gb-optional {
+  color: var(--text-light);
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.gb-input {
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid var(--border);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  padding: 8px 10px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.gb-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.gb-counter {
+  font-size: 11px;
+  color: var(--text-light);
+  font-family: "Courier New", Courier, monospace;
+  align-self: flex-end;
+  margin-top: -2px;
+}
+
+.gb-submit-btn {
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid var(--border);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.gb-submit-btn:hover {
+  color: var(--accent);
+  cursor: url("/@fs/home/uint32/Documents/personal-website/static/cursor/someone-point.png"), auto;
+}
+
+.gb-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+.gb-status {
+  font-size: 13px;
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 0.5px;
+}
+
+.gb-status--success {
+  color: #3cb369;
+}
+
+.gb-status--error {
+  color: #e53e3e;
+}
+
+
+.gb-feed-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.gb-feed-header {
+  text-align: center;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: 20px;
+}
+
+.gb-feed-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-light);
+  font-family: "Courier New", Courier, monospace;
+}
+
+.gb-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+
+.gb-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0.5rem 0;
+}
+
+.gb-entry:first-child {
+  border-top: none;
+}
+
+.gb-entry-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gb-entry-name,
+.gb-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--text);
+  font-family: "Courier New", Courier, monospace;
+}
+
+.gb-name-link {
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--accent);
+  font-family: "Courier New", Courier, monospace;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.gb-name-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.gb-ext-icon {
+  font-size: 10px;
+  vertical-align: middle;
+  margin-bottom: 3px
+}
+
+.gb-entry-date {
+  font-size: 11px;
+  color: var(--text-light);
+  font-family: "Courier New", Courier, monospace;
+  white-space: nowrap;
+}
+
+.gb-entry-message {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.gb-entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-light);
+  font-family: "Courier New", Courier, monospace;
+  flex-wrap: wrap;
+}
+
+.gb-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gb-meta-text {
+  position: relative;
+  top: 2px;
+  font-size: 12px;
+}
+
+.gb-entry-meta i {
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.gb-country-sep {
+  color: var(--text-light);
+  font-weight: normal;
+  margin: 0 2px;
+}
+
+.gb-country {
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--text-light);
+  font-family: "Courier New", Courier, monospace;
+  cursor: default;
+  border-bottom: 1px dashed var(--border);
+}
+
+.gb-country:hover {
+  color: var(--text);
+  border-bottom-color: var(--text-light);
+}
+
+
+
+.gb-loading,
+.gb-empty,
+.gb-error {
+  font-size: 13px;
+  font-family: "Courier New", Courier, monospace;
+  color: var(--text-light);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.gb-error {
+  color: #e53e3e;
+}
+
+
+.gb-load-more-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.gb-load-more-btn {
+  background: var(--bg);
+  color: var(--text-light);
+  border: 1px dashed var(--border);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.gb-load-more-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 540px) {
+  .gb-form-row {
+    flex-direction: column;
+  }
+
+  .gb-field {
+    min-width: 0;
+  }
+
+  .gb-entry-header {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .guestbook-container {
+    padding: 12px;
+  }
+}

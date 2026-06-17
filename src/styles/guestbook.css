@@ -105,7 +105,7 @@
 
 .gb-submit-btn:hover {
   color: var(--accent);
-  cursor: url("/@fs/home/uint32/Documents/personal-website/static/cursor/someone-point.png"), auto;
+  cursor: url("../../static/cursor/someone-point.png"), auto !important;
 }
 
 .gb-submit-btn:disabled {

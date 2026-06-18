@@ -191,13 +191,14 @@ export class GalleryManager {
     const gallery = document.getElementById("drawing-gallery");
     if (!gallery) return;
 
+    const sheetURL = import.meta.env.VITE_GOOGLE_SHEET_URL;
     const workerUrl = import.meta.env.VITE_WORKER_URL;
 
     try {
-      if (!workerUrl) throw new Error("Worker URL missing");
+      if (!sheetURL) throw new Error("Sheet URL missing");
 
       const [sheetResp, likesResp] = await Promise.all([
-        fetch(`${workerUrl}/sheet`),
+        fetch(sheetURL),
         workerUrl ? fetch(`${workerUrl}/likes`).catch(() => null) : Promise.resolve(null),
       ]);
 

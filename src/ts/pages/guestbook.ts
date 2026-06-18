@@ -10,6 +10,7 @@ interface GuestbookEntry {
   os: string | null;
   browser: string | null;
   country: string | null;
+  is_owner: number;
   created_at: string;
 }
 
@@ -85,6 +86,10 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#39;");
 }
 
+function ownerBadge(): string {
+  return `<span class="owner-badge" title="Site developer">developer</span>`;
+}
+
 function renderEntry(entry: GuestbookEntry): string {
   const safeName = escapeHtml(entry.name);
   const safeMessage = escapeHtml(entry.message);
@@ -92,9 +97,11 @@ function renderEntry(entry: GuestbookEntry): string {
   const country = countryLabel(entry.country);
   const separator = country ? ' <span class="gb-country-sep">·</span> ' : "";
 
+  const badge = entry.is_owner ? ownerBadge() : "";
+
   const nameHtml = entry.website
-    ? `<a href="${escapeHtml(entry.website)}" target="_blank" rel="noopener noreferrer" class="gb-name-link">${safeName} <i class="fa-solid fa-arrow-up-right-from-square gb-ext-icon"></i></a>`
-    : `<span class="gb-name">${safeName}</span>`;
+    ? `<a href="${escapeHtml(entry.website)}" target="_blank" rel="noopener noreferrer" class="gb-name-link">${safeName} <i class="fa-solid fa-arrow-up-right-from-square gb-ext-icon"></i></a>${badge}`
+    : `<span class="gb-name">${safeName}</span>${badge}`;
 
   const metaParts: string[] = [];
   if (entry.os && entry.os !== "Unknown") metaParts.push(osIcon(entry.os));

@@ -6,9 +6,11 @@ import * as Header from "./pages/header";
 import * as Footer from "./pages/footer";
 import * as Nav from "./pages/nav";
 import "./utils/status";
+import { initKonami } from "./utils/konami";
 
 // initialized once
 // persists across client-side route changes
 Header.init();
 Nav.init();
 Footer.init();
+initKonami();

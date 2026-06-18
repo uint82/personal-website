@@ -3,16 +3,14 @@
     // prevents screen flashing. by detecting the theme immediately
     (function () {
       const savedTheme = localStorage.getItem("portfolio-theme");
-      let theme =
-        savedTheme ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light");
+      const theme = savedTheme || "dark";
+
       window.__INITIAL_THEME__ = theme;
+
       document.write(
         '<link rel="stylesheet" href="/themes/' +
         theme +
-        '.css" id="theme-stylesheet">',
+        '.css" id="theme-stylesheet">'
       );
     })();
   </script>

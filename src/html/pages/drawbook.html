@@ -5,44 +5,115 @@
     </div>
     <div class="widget-content">
       <div class="drawbook-container">
+
         <div class="canvas-wrapper">
-          <canvas id="drawbook-canvas" width="700" height="500"></canvas>
+          <div class="canvas-stage">
+            <canvas id="drawbook-canvas" width="700" height="500"></canvas>
+            <div id="symmetry-overlay" class="symmetry-overlay" data-sym="none"></div>
+          </div>
         </div>
 
         <div class="controls-section">
+
           <div class="control-group">
-            <label>Tool:</label>
+            <label>Tool</label>
             <div class="button-group tools-toggle">
-              <button id="tool-brush" class="control-btn active" style="flex: 1">
+              <button id="tool-brush" class="control-btn active" title="Brush (B)">
                 <i class="fa-solid fa-paintbrush"></i>
               </button>
-              <button id="tool-eraser" class="control-btn" style="flex: 1">
+              <button id="tool-eraser" class="control-btn" title="Eraser (E)">
                 <i class="fa-solid fa-eraser"></i>
               </button>
+              <button id="tool-fill" class="control-btn" title="Fill / Paint Bucket (F)">
+                <i class="fa-solid fa-fill-drip"></i>
+              </button>
+              <button id="tool-spray" class="control-btn" title="Spray / Airbrush (A)">
+                <i class="fa-solid fa-spray-can-sparkles"></i>
+              </button>
+              <button id="tool-shape" class="control-btn" title="Shapes (S)">
+                <i class="fa-solid fa-shapes"></i>
+              </button>
             </div>
-            <label>Color:</label>
-            <div id="color-picker"></div>
+          </div>
+
+          <div id="shape-picker" class="control-group" hidden>
+            <label>Shape</label>
+            <div class="button-group tools-toggle shape-toggle">
+              <button id="shape-line" class="control-btn" title="Line">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <button id="shape-rect" class="control-btn active" title="Rectangle">
+                <i class="fa-regular fa-square"></i>
+              </button>
+              <button id="shape-circle" class="control-btn" title="Circle / Ellipse">
+                <i class="fa-regular fa-circle"></i>
+              </button>
+              <button id="shape-triangle" class="control-btn" title="Triangle">
+                <i class="fa-solid fa-play" style="transform: rotate(-90deg)"></i>
+              </button>
+            </div>
           </div>
 
           <div class="control-group">
-            <label for="brush-width">Width: <span id="width-value">3</span>px</label>
+            <label>Color</label>
+            <div id="color-picker"></div>
+            <label for="brush-width" style="margin-left: 12px;">Width <span id="width-value">3</span>px</label>
             <input type="range" id="brush-width" min="1" max="120" value="3" />
           </div>
 
-          <div class="button-group">
-            <button id="undo-btn" class="control-btn">
+          <div class="control-group">
+            <label for="opacity-slider">Opacity <span id="opacity-value">100</span>%</label>
+            <input type="range" id="opacity-slider" min="1" max="100" value="100" />
+            <label for="blend-mode" style="margin-left: 12px;">Blend</label>
+            <select id="blend-mode" class="blend-select">
+              <option value="source-over">Normal</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="darken">Darken</option>
+              <option value="lighten">Lighten</option>
+              <option value="color-dodge">Dodge</option>
+              <option value="color-burn">Burn</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label>Mirror</label>
+            <div class="button-group tools-toggle sym-toggle">
+              <button id="sym-none" class="control-btn active" title="No symmetry">Off</button>
+              <button id="sym-h" class="control-btn" title="Mirror left ↔ right">H</button>
+              <button id="sym-v" class="control-btn" title="Mirror top ↕ bottom">V</button>
+              <button id="sym-both" class="control-btn" title="Mirror both axes">✕</button>
+            </div>
+          </div>
+
+          <div class="button-group actions-group">
+            <button id="undo-btn" class="control-btn" title="Undo (Ctrl+Z)">
               <i class="fa-solid fa-rotate-left"></i>
             </button>
-            <button id="redo-btn" class="control-btn">
+            <button id="redo-btn" class="control-btn" title="Redo (Ctrl+Y)">
               <i class="fa-solid fa-rotate-right"></i>
             </button>
-            <button id="clear-btn" class="control-btn">
+            <button id="clear-btn" class="control-btn" title="Clear canvas">
               <i class="fa-solid fa-trash-can"></i>
+            </button>
+            <button id="download-btn" class="control-btn" title="Download PNG (Ctrl+S)">
+              <i class="fa-solid fa-download"></i>
             </button>
             <button id="submit-btn" class="control-btn primary">Submit</button>
           </div>
 
           <div id="upload-status" class="upload-status"></div>
+
+          <div class="shortcut-hint">
+            <span><kbd>B</kbd> Brush</span>
+            <span><kbd>E</kbd> Eraser</span>
+            <span><kbd>F</kbd> Fill</span>
+            <span><kbd>A</kbd> Spray</span>
+            <span><kbd>S</kbd> Shape</span>
+            <span><kbd>[</kbd><kbd>]</kbd> Width</span>
+            <span><kbd>Ctrl</kbd>+<kbd>Z/Y</kbd> Undo/Redo</span>
+          </div>
         </div>
       </div>
 

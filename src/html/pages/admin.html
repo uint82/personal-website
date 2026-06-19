@@ -1,0 +1,92 @@
+<div class="page" data-page="admin">
+  <div class="widget">
+    <div class="widget-header">
+      <h2 class="widget-title"><i class="fa-solid fa-shield-halved"></i> Admin</h2>
+    </div>
+    <div class="widget-content">
+      <div class="admin-container">
+
+        <div id="admin-auth" class="admin-auth">
+          <p class="admin-auth-label">Enter admin token to continue</p>
+          <div class="admin-auth-row">
+            <input type="password" id="admin-token-input" class="admin-input" placeholder="Bearer token..."
+              autocomplete="off" />
+            <button id="admin-auth-btn" class="admin-btn admin-btn--primary">Unlock</button>
+          </div>
+          <p id="admin-auth-error" class="admin-auth-error"></p>
+        </div>
+
+        <div id="admin-panel" class="admin-panel" hidden>
+
+          <div class="admin-topbar">
+            <span class="admin-authed-label">
+              <i class="fa-solid fa-circle-check"></i> Authenticated
+            </span>
+            <button id="admin-logout" class="admin-btn admin-btn--ghost">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+          </div>
+
+          <div class="admin-owner-section">
+            <button id="admin-owner-toggle" class="admin-owner-toggle">▼ Post as owner</button>
+            <div id="admin-owner-form" class="admin-owner-form" hidden>
+              <div class="admin-owner-row">
+                <div class="admin-owner-field">
+                  <label for="admin-owner-name">Name</label>
+                  <input type="text" id="admin-owner-name" class="admin-input" placeholder="Your name" maxlength="30" />
+                  <span class="admin-owner-counter" id="admin-owner-name-counter">0 / 30</span>
+                </div>
+                <div class="admin-owner-field">
+                  <label for="admin-owner-website">Website <span class="admin-owner-optional">(optional)</span></label>
+                  <input type="text" id="admin-owner-website" class="admin-input" placeholder="yourwebsite.com"
+                    maxlength="100" />
+                </div>
+              </div>
+              <div class="admin-owner-field admin-owner-field--full">
+                <label for="admin-owner-message">Message</label>
+                <textarea id="admin-owner-message" class="admin-input admin-owner-textarea"
+                  placeholder="Leave a message..." maxlength="300" rows="3"></textarea>
+                <span class="admin-owner-counter" id="admin-owner-msg-counter">0 / 300</span>
+              </div>
+              <div class="admin-owner-actions">
+                <button id="admin-owner-submit" class="admin-btn admin-btn--primary admin-btn--sm">
+                  <i class="fa-solid fa-paper-plane"></i> Submit
+                </button>
+                <span id="admin-owner-status" class="admin-owner-status"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-section">
+            <div class="admin-section-header">
+              <h3 class="admin-section-title">
+                Pending <span id="admin-pending-count" class="admin-badge">0</span>
+              </h3>
+              <button id="admin-refresh-pending" class="admin-btn admin-btn--ghost admin-btn--sm">
+                <i class="fa-solid fa-rotate"></i> Refresh
+              </button>
+            </div>
+            <div id="admin-pending-feed" class="admin-feed">
+              <p class="admin-empty">No pending entries.</p>
+            </div>
+          </div>
+
+          <div class="admin-section">
+            <div class="admin-section-header">
+              <h3 class="admin-section-title">
+                Approved <span id="admin-approved-count" class="admin-badge">0</span>
+              </h3>
+              <button id="admin-refresh-approved" class="admin-btn admin-btn--ghost admin-btn--sm">
+                <i class="fa-solid fa-rotate"></i> Refresh
+              </button>
+            </div>
+            <div id="admin-approved-feed" class="admin-feed">
+              <p class="admin-empty">No approved entries.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

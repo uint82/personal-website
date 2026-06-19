@@ -57,6 +57,12 @@ const routes: Route[] = [
       await PageController.change("drawbook");
     },
   },
+  {
+    path: "/admin",
+    load: async () => {
+      await PageController.change("admin");
+    },
+  },
 ];
 
 export async function navigate(url: string): Promise<void> {

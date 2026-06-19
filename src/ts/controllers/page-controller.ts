@@ -8,6 +8,7 @@ import * as PageCounter from "../pages/counter";
 import * as PageGuestbook from "../pages/guestbook";
 import * as Page404 from "../pages/404";
 import * as PageDrawbook from "../pages/drawbook";
+import * as PageAdmin from "../pages/admin";
 import * as Progress from "../utils/loader";
 
 type PageName =
@@ -20,7 +21,8 @@ type PageName =
   | "counter"
   | "guestbook"
   | "404"
-  | "drawbook";
+  | "drawbook"
+  | "admin";
 
 const pages = {
   home: PageHome.page,
@@ -33,6 +35,7 @@ const pages = {
   guestbook: PageGuestbook.page,
   "404": Page404.page,
   drawbook: PageDrawbook.page,
+  admin: PageAdmin.page,
 };
 
 let currentPage: (typeof pages)[PageName] | null = null;

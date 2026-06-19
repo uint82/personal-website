@@ -1,0 +1,368 @@
+.admin-container {
+  color: var(--text);
+  font-family: "Courier New", Courier, monospace;
+}
+
+.admin-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+}
+
+.admin-auth-label {
+  font-size: 13px;
+  color: var(--text-light);
+  letter-spacing: 0.5px;
+}
+
+.admin-auth-row {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-auth-error {
+  font-size: 12px;
+  color: #e53e3e;
+  min-height: 1em;
+}
+
+.admin-input {
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid var(--border);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-btn {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Courier New", Courier, monospace;
+  border: 2px solid;
+  border-color: transparent;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+  white-space: nowrap;
+  cursor: url("../../static/cursor/someone-point.png"), auto !important;
+}
+
+.admin-btn:hover {
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.admin-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.admin-btn--ghost {
+  border-color: transparent;
+  color: var(--text-light);
+  font-weight: normal;
+}
+
+.admin-btn--ghost:hover {
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.admin-btn--sm {
+  font-size: 11px;
+  padding: 5px 10px;
+}
+
+.admin-btn--approve {
+  color: #3cb369;
+  border-color: #3cb369;
+}
+
+.admin-btn--approve:hover {
+  color: #fff;
+  background: #3cb369;
+  border-color: #3cb369;
+}
+
+.admin-btn--danger {
+  color: #e53e3e;
+  border-color: #e53e3e;
+}
+
+.admin-btn--danger:hover {
+  color: #fff;
+  background: #e53e3e;
+  border-color: #e53e3e;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: 24px;
+}
+
+.admin-authed-label {
+  font-size: 12px;
+  color: #3cb369;
+  letter-spacing: 1px;
+}
+
+.admin-owner-section {
+  margin-bottom: 28px;
+  border: 1px dashed var(--border);
+}
+
+.admin-owner-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s ease;
+}
+
+.admin-owner-toggle:hover {
+  color: var(--accent);
+}
+
+.admin-owner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 14px 14px;
+  border-top: 1px dashed var(--border);
+}
+
+.admin-owner-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+}
+
+.admin-owner-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 160px;
+  position: relative;
+}
+
+.admin-owner-field--full {
+  flex-basis: 100%;
+  min-width: 0;
+}
+
+.admin-owner-field label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-light);
+}
+
+.admin-owner-optional {
+  font-size: 10px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.admin-owner-textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.admin-owner-counter {
+  font-size: 10px;
+  color: var(--text-light);
+  align-self: flex-end;
+  margin-top: -2px;
+}
+
+.admin-owner-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-owner-status {
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.admin-owner-status--success {
+  color: #3cb369;
+}
+
+.admin-owner-status--error {
+  color: #e53e3e;
+}
+
+.admin-owner-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  vertical-align: middle;
+  position: relative;
+  bottom: 1px;
+  opacity: 0.85;
+}
+
+.admin-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-light);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-badge {
+  display: inline-block;
+  background: var(--border);
+  color: var(--text);
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-weight: normal;
+  letter-spacing: 0;
+}
+
+.admin-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 15px;
+}
+
+.admin-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0;
+}
+
+.admin-entry-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-entry-name {
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.admin-entry-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.admin-entry-link:hover {
+  text-decoration: underline;
+}
+
+.admin-entry-link i {
+  font-size: 10px;
+}
+
+.admin-entry-date {
+  font-size: 11px;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.admin-entry-message {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-entry-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-entry-meta {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.admin-entry-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-loading,
+.admin-empty,
+.admin-error {
+  font-size: 12px;
+  color: var(--text-light);
+  padding: 16px 0;
+  text-align: center;
+}
+
+.admin-error {
+  color: #e53e3e;
+}
+
+@media (max-width: 540px) {
+  .admin-container {
+    padding: 12px;
+  }
+
+  .admin-entry-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-owner-row {
+    flex-direction: column;
+  }
+
+  .admin-owner-field {
+    min-width: 0;
+  }
+}

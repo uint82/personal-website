@@ -14,6 +14,7 @@ const titleMap: Record<string, string> = {
   "/projects": "Projects",
   "/guestbook": "Guestbook",
   "/drawbook": "Drawbook",
+  "/admin": "Admin",
 };
 
 export function getDynamicTitle(

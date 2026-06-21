@@ -1,5 +1,31 @@
 [
   {
+    "version": "v2.5.0",
+    "date": "Jun 21, 2026",
+    "changes": [
+      {
+        "type": "improved",
+        "text": "replace external guestbook service with custom guestbook"
+      },
+      {
+        "type": "improved",
+        "text": "add like button for drawing library"
+      },
+      {
+        "type": "improved",
+        "text": "add more drawing controls and tools such as fill, mirror, opacity, blend, shape and spray"
+      },
+      {
+        "type": "added",
+        "text": "add admin panel for managing the guestbook approval"
+      },
+      {
+        "type": "fixed",
+        "text": "set the default theme to dark theme"
+      }
+    ]
+  },
+  {
     "version": "v2.4.0",
     "date": "Mar 19, 2026",
     "changes": [

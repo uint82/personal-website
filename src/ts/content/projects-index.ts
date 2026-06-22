@@ -16,7 +16,7 @@ export const projectsIndex = [
     path: "/content/projects/portfolio-template.md",
   },
   {
-    slug: "crabtype",
-    path: "/content/projects/crabtype.md",
+    slug: "typa",
+    path: "/content/projects/typa.md",
   },
 ];

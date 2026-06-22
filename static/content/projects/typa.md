@@ -1,0 +1,290 @@
+---
+title:
+  text: "Typa"
+  config: "3.5c 2.5c"
+description: "Typa is designed to be a lightweight, keyboard-centric alternative to web-based typing tests. It runs entirely in your terminal with support for custom themes and multiple testing modes."
+date: "February 6, 2026"
+published: true
+featured: true
+tags: ["rust", "typingtest", "terminal"]
+draft: false
+image:
+  url: "/images/projects/typa.png"
+  alt: "typa interface"
+links:
+  - text: "GitHub"
+    url: "https://github.com/uint82/typa"
+    icon: "github"
+---
+
+A minimal, terminal-based typing speed test written in Rust.
+
+Typa is designed to be a lightweight, keyboard-centric alternative to web-based typing tests. It runs entirely in your terminal with support for custom themes and multiple testing modes.
+
+## Features
+
+- **Multiple Test Modes**:
+  - **Time**: Test against a countdown timer (15, 30, 60, 120 seconds).
+  - **Words**: Type a set number of words (10, 25, 50, etc.).
+  - **Quote**: Type specific quotes from a curated database.
+
+- **Detailed Statistics**: View WPM, raw WPM, accuracy, and character breakdowns (correct/incorrect/extra/missed) after every test run.
+
+- **Customization**:
+  - Built-in color themes selectable by name.
+  - Full custom color theme support via TOML configuration file.
+  - Toggle punctuation and numbers independently.
+  - Multiple language support (English and Indonesian).
+
+- **Responsive UI**:
+  - Clean, distraction-free interface.
+  - Line wrapping that adapts to terminal width.
+
+## Installation
+
+### Install with Cargo
+
+```bash
+cargo install typa
+```
+
+### Build from Source
+
+1. **Clone Repository**
+
+```bash
+git clone https://github.com/uint82/typa.git
+cd typa
+```
+
+2. **Build the project**
+
+```bash
+cargo install --path .
+```
+
+3. **Run the binary**
+
+```bash
+./target/release/typa
+```
+
+## Usage
+
+To start the default test (Time mode, 60 seconds, English):
+
+```bash
+typa
+```
+
+For usage instructions, run:
+
+```bash
+typa --help
+```
+
+### Command-Line Options
+
+```
+typa 0.4.0
+
+A rusty terminal typing test
+
+Usage: typa [OPTIONS]
+
+Options:
+  -t, --time <TIME>          Time mode: Custom duration in seconds (e.g. 15, 60, 120, 3600)
+  -w, --words <WORDS>        Words mode: Word count (1 to 10000)
+  -q, --quote <QUOTE>        Quote mode: "short", "medium", "long", "very_long", "all", or a specific ID (e.g. 25)
+  -l, --language <LANGUAGE>  Language: Filename to use (e.g. "english", "indonesian_1k") [default: english]
+
+Flags:
+  -n, --numbers        Include numbers in the test
+  -p, --punctuation    Include punctuation in the test
+      --stats          Show interactive typing stats and history
+      --clear-history  Delete all saved history (will prompt for confirmation)
+  -h, --help           Print help
+  -V, --version        Print version
+```
+
+### Examples
+
+```bash
+# Run a 60 second test
+typa -t 60
+
+# Run a 50 word test
+typa -w 50
+
+# Run a short quote test
+typa -q short
+
+# Run a 30 second test with punctuation and numbers
+typa -t 30 -p -n
+
+# Run a 100 word test in Indonesian with punctuation
+typa -w 100 -l indonesian_1k -p
+
+# Run a quote test in Indonesian
+typa -q short -l indonesian
+
+# Run a specific quote by ID
+typa -q 42
+
+# Run a very long quote test
+typa -q verylong
+```
+
+## Keyboard Shortcuts
+
+During a test:
+
+- **Tab**: Restart the current test
+- **Esc** or **Ctrl+Q**: Quit the application
+
+## Configuration
+
+Typa supports color themes via a TOML configuration file, either by selecting a built-in theme by name or defining your own custom colors.
+
+### Configuration File Location
+
+The configuration file should be named `config.toml` and placed in:
+
+- **Linux**: `~/.config/typa/config.toml`
+- **macOS**: `$HOME/Library/Application Support/typa/config/config.toml`
+- **Windows**: `C:\Users\user\AppData\Roaming\typa\config\config.toml`
+
+**Note**: If the configuration directory doesn't exist, you'll need to create it manually before adding your `config.toml` file.
+
+### Built-in Themes
+
+Select a built-in theme by name:
+
+```toml
+theme = "gruvbox"
+```
+
+Available built-in themes:
+
+| Name            | Description                  |
+|-----------------|------------------------------|
+| `default`       | Gruvbox dark                 |
+| `gruvbox_dark`  | Gruvbox dark                 |
+| `gruvbox_light` | Gruvbox light                |
+
+### Custom Theme
+
+To define your own colors, add a `[custom_theme]` section. This takes priority over the `theme` setting above.
+
+```toml
+[custom_theme]
+bg = "#2c2e34"          # Background color
+main = "#e2b714"        # Brand color (timer, active stats, highlights)
+caret = "#e2b714"       # Cursor block color
+text = "#d1d0c5"        # Correctly typed text
+sub = "#646669"         # Untyped text, UI labels, footer instructions
+subAlt = "#45474d"      # UI borders, subtle elements
+error = "#ca4754"       # Incorrect / extra characters
+```
+
+All colors should be specified in hexadecimal format. If no configuration is found, the `default` theme is used.
+
+## Statistics Explanation
+
+After completing a test, you'll see several metrics:
+
+- **WPM (Words Per Minute)**: Your typing speed adjusted for accuracy. Calculated as `(correct_chars / 5 - uncorrected_errors) / time_in_minutes`.
+- **Raw WPM**: Your typing speed without accuracy adjustments. Calculated as `(all_typed_chars / 5) / time_in_minutes`.
+- **Accuracy**: Percentage of characters typed correctly: `(correct_chars / total_chars) × 100`.
+- **Character Breakdown**:
+  - **cor**: Correctly typed characters
+  - **inc**: Incorrectly typed characters
+  - **ext**: Extra characters typed beyond the expected text
+  - **mis**: Characters you skipped or didn't type
+- **Time**: Total time spent on the test in seconds
+
+## Quote Mode Details
+
+Quote mode allows you to type passages from a curated collection. Quotes are categorized by length:
+
+- **Short**: 0 - 100 words
+- **Medium**: 101 - 300 words
+- **Long**: 301 - 600 words
+- **Very Long**: 601 - 9999 words
+- **All**: Random selection from all categories
+
+You can also select a specific quote by its ID number if you know it.
+
+## Language Support
+
+Typa includes word lists and quote collections for multiple languages. The default is English, but you can specify others using the `-l` flag.
+
+Word lists and quote collections are independent. A word list (used in time and word modes) and a quote collection (used in quote mode) do not need to match — only the relevant file is loaded depending on the mode:
+
+- **Time / Words mode** loads `language/{name}.json`
+- **Quote mode** loads `quotes/{name}.json`
+
+This means you can use a specific word list like `indonesian_1k` in word mode without needing a matching quote file to exist.
+
+Currently supported languages:
+
+| Language   | Word list        | Quotes       |
+|------------|------------------|--------------|
+| English    | `english`        | `english`    |
+| Indonesian | `indonesian_1k`  | `indonesian` |
+
+## Contributing
+
+Contributions are welcome! Here's how you can help:
+
+### How to Contribute
+
+1. **Fork the repository** on GitHub
+2. **Create a feature branch** (`git checkout -b feat/amazing-feature`)
+3. **Make your changes** and commit them using [Conventional Commits](https://www.conventionalcommits.org/)
+   - `feat:` for new features
+   - `fix:` for bug fixes
+   - `docs:` for documentation changes
+   - `style:` for formatting, missing semicolons, etc.
+   - `refactor:` for code refactoring
+   - `test:` for adding tests
+   - `chore:` for maintenance tasks
+4. **Push to your branch** (`git push origin feat/amazing-feature`)
+5. **Open a Pull Request**
+
+### Commit Message Examples
+
+```bash
+feat: add support for Spanish language
+fix: correct WPM calculation for long tests
+docs: update installation instructions
+chore: update dependencies
+```
+
+### Areas for Improvement
+
+- Adding more language support
+- Expanding quote collections
+- Additional theme presets
+- Performance optimizations
+- Bug fixes and testing
+
+### Reporting Issues
+
+Found a bug or have a feature request? Please [open an issue](https://github.com/uint82/typa/issues) on GitHub with:
+
+- A clear description of the problem or suggestion
+- Steps to reproduce (for bugs)
+- Your environment details (OS, terminal, Rust version)
+
+All contributions, big or small, are appreciated!
+
+## License
+
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+Inspired by popular typing test platforms like Monkeytype and tt, but designed for terminal enthusiasts who prefer a minimal, keyboard-driven experience.
+
+This project uses open-source word lists and quote data sourced from the [Monkeytype GitHub repository](https://github.com/monkeytype/monkeytype), which is licensed under GPL-3.0. All rights to the original content belong to their respective authors. This project is not affiliated with or endorsed by Monkeytype.

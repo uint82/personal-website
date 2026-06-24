@@ -1,12 +1,40 @@
 <div class="widget">
   <div class="widget-header">
     <h6 class="widget-title">
-      <i class="fa-solid fa-person-booth"></i> Music Player
+      <i class="fa-solid fa-record-vinyl"></i> Music Player
     </h6>
   </div>
 
   <div class="widget-content">
     <div class="music-player">
+
+      <div class="vinyl-stage">
+        <div class="vinyl-disc" id="vinyl-disc">
+          <div class="vinyl-groove" style="width:150px;height:150px;"></div>
+          <div class="vinyl-groove" style="width:138px;height:138px;"></div>
+          <div class="vinyl-groove" style="width:126px;height:126px;"></div>
+          <div class="vinyl-groove" style="width:114px;height:114px;"></div>
+          <div class="vinyl-groove" style="width:100px;height:100px;"></div>
+          <div class="vinyl-groove" style="width:88px;height:88px;"></div>
+          <div class="vinyl-groove" style="width:74px;height:74px;"></div>
+          <div class="vinyl-label">
+            <div class="vinyl-label-text" id="vinyl-label-text">—</div>
+            <div class="vinyl-hole"></div>
+          </div>
+        </div>
+
+        <div class="tonearm-wrapper" id="tonearm">
+          <svg class="tonearm-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="72" cy="8" r="6" fill="var(--text-light)" opacity="0.5" />
+            <circle cx="72" cy="8" r="3" fill="var(--text)" />
+            <line x1="72" y1="14" x2="28" y2="70" stroke="var(--text-light)" stroke-width="2.5" stroke-linecap="round"
+              opacity="0.7" />
+            <circle cx="28" cy="70" r="4" fill="var(--text)" opacity="0.4" />
+            <circle cx="28" cy="70" r="2" fill="var(--text)" />
+          </svg>
+        </div>
+      </div>
+
       <div class="track-info">
         <div class="track-title-container">
           <div class="track-title" id="track-title">Loading...</div>

@@ -10,27 +10,25 @@ reading_time: 12
 draft: false
 ---
 
-Most developers reach for React Router, Vue Router, or similar libraries when building single-page applications. But for my portfolio, I wanted full control—no black boxes, no unnecessary abstractions. This is how I built a TypeScript-based routing system with page lifecycle management from scratch.
+When I started on my portfolio site I had React Router in my head as the default option, just because that's what I always reach for. But this time I decided to just write the routing myself. Partly out of curiosity, partly because I didn't want to pull in a dependency for something that's, like, conceptually not that complicated. Turned out to be more involved than I expected, but here's how it ended up.
 
 ## Why Build Your Own Router?
 
-Framework routers are powerful, but they come with baggage. For a portfolio site, I wanted:
+I wanted to understand what these libraries are actually doing under the hood, and a portfolio site felt like a low-stakes place to find out. Along the way I figured I'd also get:
 
-- Complete control over page transitions
-- Zero runtime dependencies
-- Type-safe routing with TypeScript
-- A clean separation between routing logic and page rendering
-- Proper lifecycle hooks for data loading and cleanup
+- no dependency to update every few months
+- routes that are actually type-checked instead of stringly-typed everywhere
+- some separation between "what URL matched" and "what gets rendered," instead of those being tangled together
 
-Building it myself meant understanding every moving part. No magic, no surprises.
+Mostly though it was just an excuse to mess around with the History API, which I'd never actually touched directly before.
 
 ## The Architecture
 
-My routing system has three core layers:
+I ended up with roughly three layers, though calling it "architecture" feels a little generous for ~200 lines of code.
 
 ### 1. Route Controller
 
-The route controller manages URL matching and navigation. Routes are defined with either static paths or regex patterns for dynamic segments:
+This part just matches the URL against a list of routes. Some are plain strings, some are regex for stuff like blog slugs:
 
 ```typescript
 const routes: Route[] = [
@@ -44,16 +42,16 @@ const routes: Route[] = [
 ];
 ```
 
-The router matches paths in order. For dynamic routes, it extracts parameters from the regex capture groups and passes them to the page controller.
+It checks routes top to bottom and the first match wins, which is the same way basically every router works once you look under the hood. For the regex ones it pulls whatever's in the capture group and hands it off to the page.
 
 ### 2. Page Controller
 
-This layer manages page transitions and lifecycle. Each page goes through four stages:
+This is the part I rewrote the most times. Every page goes through four steps when it's switched to or away from:
 
-1. **beforeShow** - Data loading, cleanup of previous listeners
-2. **show** - Add `.active` class to display the page
-3. **afterShow** - Attach event listeners, finalize rendering
-4. **beforeHide/afterHide** - Cleanup before switching pages
+1. **beforeShow** - load data, clean up whatever the last page left behind
+2. **show** - slap an `.active` class on it so it's visible
+3. **afterShow** - attach event listeners, finish rendering
+4. **beforeHide/afterHide** - cleanup before the next page takes over
 
 ```typescript
 export async function change(pageName: PageName, options?: ChangeOptions) {
@@ -73,11 +71,11 @@ export async function change(pageName: PageName, options?: ChangeOptions) {
 }
 ```
 
-This ensures smooth transitions and proper cleanup. No memory leaks, no orphaned listeners.
+I didn't get this right on the first try, by the way. My first version had listeners stacking up every time you navigated back to a page, which I only noticed because clicking something started firing the handler like four times. That's basically what pushed me toward the explicit four-phase thing instead of just winging it.
 
 ### 3. Page Classes
 
-Each page extends a base `Page` class and implements its own lifecycle methods:
+Each page is a class extending a base `Page` thing, and handles its own data and DOM stuff:
 
 ```typescript
 class BlogsPage extends Page {
@@ -100,13 +98,13 @@ class BlogsPage extends Page {
 }
 ```
 
-Pages are self-contained. They manage their own data, rendering, and events.
+Nothing too clever here, it's basically each page minding its own business and cleaning up after itself when it leaves.
 
-## Key Implementation Details
+## Some Implementation Stuff Worth Mentioning
 
 ### Dynamic Route Matching
 
-For routes like `/blogs/my-slug`, the router uses regex patterns:
+For something like `/blogs/my-slug`, the router falls back to checking regex patterns if no exact string match is found:
 
 ```typescript
 async function router() {
@@ -137,11 +135,11 @@ async function router() {
 }
 ```
 
-The extracted parameters flow through to the page's `beforeShow` method.
+Whatever gets matched out of the regex flows into the page's `beforeShow`, which is honestly the part I'm least sure I'd defend if someone picked it apart, but it works for now.
 
 ### Navigation and Breadcrumbs
 
-Navigation is centralized through a single function that updates history and triggers the router:
+All navigation funnels through one function so I don't end up with `history.pushState` calls scattered everywhere:
 
 ```typescript
 export async function navigate(url: string) {
@@ -150,11 +148,11 @@ export async function navigate(url: string) {
 }
 ```
 
-A custom `routechange` event keeps the breadcrumb navigation in sync with the current route, including dynamic parameters.
+I also fire a `routechange` custom event whenever the route changes, mainly so the breadcrumb component can update itself without needing to know anything about how routing actually works internally. Felt like a clean way to avoid importing routing logic into a component that has nothing to do with routing.
 
 ### Type Safety
 
-TypeScript ensures page names and parameters are validated at compile time:
+This is the part TypeScript actually earns its keep on, since page names are a union type instead of just strings everywhere:
 
 ```typescript
 type PageName = "home" | "blogs" | "blog-detail" | "projects" | "404";
@@ -167,20 +165,12 @@ const pages: Record<PageName, Page> = {
 };
 ```
 
-No more typos breaking routes at runtime.
+I typo'd a page name early on and TS caught it immediately instead of me finding out by clicking a broken link in prod.
 
 ## What I Learned
 
-The biggest lesson: **lifecycle management is everything**. Without proper cleanup between page transitions, you get memory leaks and buggy behavior. The four-phase lifecycle (beforeShow → show → afterShow → beforeHide) makes it explicit when data loads, when events attach, and when cleanup happens.
+The biggest thing was just how much lifecycle management matters and how easy it is to get wrong. Without the cleanup steps I kept getting weird bugs, duplicate listeners, stuff firing twice, data from the previous page bleeding into the next one. None of that is obvious until you hit it.
 
-The second lesson: **custom events are underrated**. Using `routechange` events to communicate between the router and navigation components keeps everything decoupled. The breadcrumb system doesn't need to import routing logic—it just listens for events.
+The other thing, custom events turned out way more useful than I expected. Using `routechange` to let the breadcrumb thing know what happened, without it needing to import any router code directly, kept things a lot less tangled than I thought it'd be going in.
 
-Framework routers handle all this behind the scenes. Building it yourself means understanding _why_ these patterns exist.
-
-## Is It Worth It?
-
-For a portfolio? Absolutely. The entire routing system is ~200 lines of TypeScript. It's maintainable, type-safe, and does exactly what I need—nothing more, nothing less.
-
-For a production app at scale? Maybe not. But that's the point: building it teaches you what frameworks actually do. The next time you use React Router, you'll understand why it works the way it does.
-
-Sometimes the best way to learn is to build it yourself.
+The whole thing ended up around 200 lines. Next time I reach for React Router on an actual production thing, I'll at least have a rough idea what it's doing instead of just trusting it blindly.

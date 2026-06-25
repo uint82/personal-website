@@ -10,27 +10,25 @@ reading_time: 6
 draft: false
 ---
 
-I recently built <a href="/drawbook">**DrawBook**</a>, a digital guestbook where visitors can leave doodles instead of comments. I wanted it to be persistent and public, but I didn't want to spin up a PostgreSQL instance, manage a VPS, or pay for storage buckets.
+I added <a href="/drawbook">**DrawBook**</a> to my site recently, basically a guestbook except people leave doodles instead of writing "nice site!" in the comments. The annoying part wasn't the canvas drawing itself, that's pretty straightforward, it was figuring out where to actually store everyone's drawings without setting up a real database or paying for anything.
 
-I wanted a "backendless" backend.
-
-Here is how I wired together **Cloudflare Workers**, **ImgBB**, **Google Forms** and **Google Sheets** to create a completely free, serverless persistence layer.
+So I ended up duct-taping together **Cloudflare Workers**, **ImgBB**, **Google Forms**, and **Google Sheets** into something that works as a free persistence layer. It's a little ridiculous when you lay it out but it does the job.
 
 ## The Architecture
 
-The flow of data is a bit of a Rube Goldberg machine, but it’s robust enough for a side project:
+The data flow looks kind of unhinged on paper, but it's held up fine so far:
 
-1.  **User draws** on an HTML Canvas.
-2.  **Upload:** A Cloudflare Worker receives the image and proxies it to the ImgBB API.
-3.  **Save:** The Worker returns an image URL, which the frontend submits to a Google Form.
-4.  **Store:** The Google Form automatically dumps the data into a Google Sheet.
-5.  **Read:** The frontend fetches the Google Sheet as a CSV to render the gallery.
+1. **User draws** on an HTML Canvas.
+2. **Upload:** A Cloudflare Worker grabs the image and forwards it to the ImgBB API.
+3. **Save:** The Worker hands back an image URL, which gets submitted to a Google Form.
+4. **Store:** The Form dumps that into a Google Sheet automatically.
+5. **Read:** The frontend pulls the Sheet as CSV and renders the gallery from that.
 
-## Step 1: The Middleman (Cloudflare Workers)
+## Step 1: Cloudflare Worker as a Proxy
 
-Directly calling the ImgBB API from the browser is a bad idea because it exposes your API key. I needed a proxy.
+You can't call the ImgBB API straight from the browser because that means shipping your API key to anyone who opens devtools. So there needs to be something in between.
 
-I set up a simple Cloudflare Worker. It accepts the image `FormData` from the frontend, appends my secret ImgBB API key, and forwards it to ImgBB.
+The Worker just accepts the image `FormData` from the frontend, tacks on my ImgBB key server-side, and forwards the whole thing to ImgBB.
 
 ```typescript
 // worker.ts
@@ -63,15 +61,15 @@ export default {
 };
 ```
 
-This keeps my API keys safe and handles CORS headers automatically.
+Keeps the key off the client and CORS just kind of works out of the box with this setup, which was a nice surprise.
 
-## Step 2: Google Forms as a "Write" API
+## Step 2: Google Forms as a Write Endpoint
 
-Once ImgBB returns the hosted image URL, we need to save it somewhere. Instead of setting up a database, I used **Google Forms**.
+Once ImgBB gives back the hosted URL, that needs to go somewhere. Instead of a real database I just used Google Forms for this part.
 
-Google Forms allows you to pre-fill URL parameters. By inspecting the form's HTML, you can find the `name` attribute of the input field (usually something like `entry.123456789`).
+Turns out Google Forms accepts pre-filled URL parameters, and if you dig through the form's HTML you can find each input's `name` attribute, usually something like `entry.123456789`.
 
-We can then `POST` data directly to the form's endpoint without the user ever seeing the actual Google Form UI.
+From there you can just `POST` straight to the form's endpoint and the user never sees the actual form at all.
 
 ```typescript
 // Inside drawbook.ts
@@ -89,17 +87,17 @@ await fetch(
 );
 ```
 
-Using `mode: "no-cors"` is the trick here. We can't read the response (to check if it succeeded), but the data still gets sent.
+The `mode: "no-cors"` bit is the annoying part, since it means you can't actually read the response to confirm it worked. It just kind of... goes. I had to trust it for a while before checking the sheet manually to make sure submissions were landing.
 
-## Step 3: Google Sheets as a "Read" API
+## Step 3: Google Sheets as a Read Endpoint
 
-Every Google Form is connected to a Google Sheet. To read the data back into the website, we just need to publish the sheet to the web.
+Every Google Form has a Sheet attached to it. To get that data back into the site, you just publish the sheet to the web:
 
-1.  Open the linked Google Sheet.
-2.  Go to **File > Share > Publish to web**.
-3.  Select **CSV** as the format.
+1. Open the linked Google Sheet.
+2. Go to **File > Share > Publish to web**.
+3. Pick **CSV** as the format.
 
-This gives us a public URL that returns raw CSV data. Parsing it in TypeScript is trivial:
+That gives you a public URL serving raw CSV. Parsing it is barely anything:
 
 ```typescript
 const sheetURL =
@@ -117,8 +115,8 @@ rows.reverse().forEach((row) => {
 
 ## Conclusion
 
-Is this production-ready? **No.** Google limits the number of requests you can make, and `no-cors` mode makes error handling difficult.
+This is obviously not something you'd ship for a real product. Google rate-limits requests, and `no-cors` makes debugging failed submissions kind of a pain since you're flying blind.
 
-But for a personal site or a guestbook? It's perfect. It costs $0, requires zero maintenance, and I essentially get a database with a built-in admin UI (Google Sheets) for free.
+But for a guestbook on a personal site, it's been fine. Doesn't cost anything, nothing to maintain, and I basically got a database with a built-in admin panel for free since Sheets already does that job.
 
-If you want to leave a mark, check out the <a href="/drawbook">**DrawBook**</a> page and add your masterpiece to the spreadsheet.
+Go leave something on the <a href="/drawbook">**DrawBook**</a> page if you want, your doodle ends up sitting in my spreadsheet next to everyone else's.

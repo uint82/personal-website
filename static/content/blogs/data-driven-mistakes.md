@@ -1,7 +1,7 @@
 ---
 title:
   text: "Data Driven Mistakes"
-  config: "2c 2.5 4c"
+  config: "2c 2.5 ci"
 description: "Data-driven design sounds smart, but relying on click metrics alone makes UI problems worse. The stats only reflect your current design—listen to actual user feedback instead."
 published_at: "January 2, 2026"
 tags: ["ui", "ux", "design", "product", "opinion"]
@@ -14,16 +14,16 @@ Several years ago, I remember reading about data-driven design. How big companie
 
 It's a little crazy to drive your design-decision from just some stats:
 
-— How many clicks did this menu item receive?
-— Only a couple from hundreds of users.
-— Hmm, we might remove the item, or send it to a deeper menu level.
+- How many clicks did this menu item receive?
+- Only a couple from hundreds of users.
+- Hmm, we might remove the item, or send it to a deeper menu level.
 
 Or
 
-— This is the most used action from the whole program.
-— Hmm, I think we should make its button bigger.
-— It's already half the screen…
-— It should be as big as the screen, probably the only button in the whole program.
+- This is the most used action from the whole program.
+- Hmm, I think we should make its button bigger.
+- It's already half the screen…
+- It should be as big as the screen, probably the only button in the whole program.
 
 These are totally exaggerated characterizations, but they are a good example about what you can achieve doing data-driven design: You are going to make the problems of your UI just worse.
 

@@ -10,17 +10,11 @@ reading_time: 6
 draft: false
 ---
 
-When I started building this blog, everyone told me to use `gray-matter` for parsing frontmatter. It's the standard, it works, it's tested—why reinvent the wheel?
-
-Well, because I wanted to know how the wheel works.
-
-Plus, `gray-matter` pulls in a bunch of dependencies I don't need. For a simple blog with a handful of markdown files, that felt like overkill. So I built my own YAML frontmatter parser in about 200 lines of TypeScript.
-
-Was it worth it? Absolutely.
+So when I was setting up this blog, the obvious move was to just npm install `gray-matter` like every tutorial tells you to. I almost did. Then I got curious how it actually works under the hood and ended up writing my own version in about 200 lines of TypeScript instead.
 
 ## The Problem
 
-Frontmatter is just YAML (or JSON) at the top of a markdown file, wrapped in `---` delimiters:
+Frontmatter is basically just YAML sitting at the top of a markdown file between two `---` lines:
 
 ```yaml
 ---
@@ -33,22 +27,20 @@ published: true
 # Content starts here...
 ```
 
-I needed to:
+What I actually needed to do was:
 
-1. Extract the frontmatter block from markdown
-2. Parse YAML-like syntax (objects, arrays, strings, numbers, booleans)
-3. Handle nested structures
-4. Support both inline arrays `[a, b, c]` and multi-line arrays
+1. Pull that frontmatter block out from the rest of the markdown
+2. Parse the YAML-ish syntax (strings, numbers, booleans, arrays, objects)
+3. Deal with nested stuff
+4. Handle both `[a, b, c]` inline arrays and the multi-line kind
 
-Libraries like `gray-matter` do this and more. But they also handle edge cases I don't care about, support multiple formats I won't use, and add weight I don't want.
+## How It Works
 
-## The Architecture
+It ended up being three-ish pieces stitched together.
 
-My parser has three main components:
+### 1. Pulling Out the Frontmatter
 
-### 1. Frontmatter Extraction
-
-First, I use a regex to split the markdown into frontmatter and content:
+First step is just a regex split between the frontmatter block and everything after it:
 
 ```typescript
 export function extractFrontmatter(markdown: string): ParseResult {
@@ -66,11 +58,11 @@ export function extractFrontmatter(markdown: string): ParseResult {
 }
 ```
 
-Simple. If there's no frontmatter, return an empty object and the whole file as content.
+If there's no frontmatter at all, it just gives back an empty object and treats the whole file as content. Nothing fancy.
 
-### 2. Line-by-Line Parsing
+### 2. Going Line by Line
 
-YAML is indent-based, so I parse it line by line, tracking indentation to understand structure:
+Since YAML cares about indentation, I just walk through it line by line and track how indented each line is:
 
 ```typescript
 function parseFrontmatterText(frontmatterText: string): any {
@@ -103,11 +95,11 @@ function parseFrontmatterText(frontmatterText: string): any {
 }
 ```
 
-The trick is looking ahead. If a key has no inline value, check the next line to determine if it's an object or array.
+The annoying part is when a key has nothing after the colon, you have to peek at the next line to figure out if it's about to be a nested object or an array. I spent way longer than I'd like to admit getting this part right.
 
-### 3. Recursive Parsing
+### 3. Recursion for Nested Stuff
 
-For nested objects and arrays, I use recursive functions that track indentation levels:
+For anything nested I just recurse and track indentation as the "are we still inside this block" signal:
 
 ```typescript
 export function parseObject(
@@ -135,11 +127,11 @@ export function parseObject(
 }
 ```
 
-The same pattern works for arrays. Start at a base indentation, parse everything at that level or deeper, and stop when you encounter a line with less indentation.
+Arrays work pretty much the same way, just stop once the indentation drops back below where you started.
 
-### 4. Value Type Detection
+### 4. Figuring Out Value Types
 
-Finally, I need to convert string values to their proper types:
+Last bit is converting the raw string value into whatever type it's actually supposed to be:
 
 ```typescript
 export function parseValue(value: string): any {
@@ -164,11 +156,11 @@ export function parseValue(value: string): any {
 }
 ```
 
-No fancy type inference, just the basics. If it looks like a number, it's a number. If it says "true", it's a boolean. Everything else is a string.
+No real type inference magic, it's just "looks like a number → number, says true/false → boolean, otherwise → string." Does the job for what I need.
 
-## Integration
+## Hooking It Up
 
-Once parsed, the frontmatter flows into my blog and project pages:
+After parsing, it all flows into the blog pages like this:
 
 ```typescript
 export async function loadBlogMarkdown(path: string) {
@@ -187,7 +179,7 @@ export async function loadBlogMarkdown(path: string) {
 }
 ```
 
-Type-safe frontmatter interfaces ensure I'm accessing the right fields:
+And I've got a typed interface for it so I'm not just blindly accessing fields and hoping they exist:
 
 ```typescript
 export interface BlogFrontmatter extends BaseFrontmatter {
@@ -197,31 +189,21 @@ export interface BlogFrontmatter extends BaseFrontmatter {
 }
 ```
 
-No runtime surprises. If a field is missing, TypeScript tells me at compile time.
+If a field's missing or typo'd, TypeScript yells at me before it ever becomes a runtime problem, which honestly saved me a couple times already.
 
 ## What I Learned
 
-**Parsing is easier than you think.** YAML's indent-based structure is actually straightforward to parse line-by-line. The hardest part is handling all the edge cases—but if you control the input format, you don't need to handle every edge case.
+Parsing YAML-ish stuff is way less scary than I expected going in. Because it's indent-based you can basically just walk it line by line — the tricky part isn't really the logic, it's the edge cases, and since I control every file going into this I just don't have to handle most of them.
 
-**Dependencies have a cost.** `gray-matter` works great, but it's 20KB minified with several dependencies. My parser is 6KB with zero dependencies. For a static site, that matters.
+When something does break, I just go fix it instead of digging through someone else's GitHub issues trying to figure out if it's a known bug. That part's been nice.
 
-**Understanding your tools makes debugging trivial.** When something breaks, I don't need to dig through library source code or search GitHub issues. I know exactly how my parser works because I wrote it.
+## What It Doesn't Do
 
-## Trade-offs
+To be clear, this isn't a real YAML parser. It doesn't handle:
 
-This isn't a silver bullet. My parser doesn't handle:
+- comments
+- multi-line strings
+- anchors/aliases
+- basically anything outside the small subset I needed
 
-- Comments in YAML
-- Multi-line strings
-- Anchors and aliases
-- YAML's full spec
-
-But I don't need those features. For blog frontmatter, simple key-value pairs, objects, and arrays are enough.
-
-If I needed a full YAML parser, I'd use a library. But for this specific use case, a custom solution is smaller, faster, and easier to maintain.
-
-## The Takeaway
-
-Not everything needs a library. Sometimes the "reinventing the wheel" approach teaches you more than using the standard solution.
-
-Next time you reach for a package, ask yourself: "Do I need all of this?" If the answer is no, try building it yourself. You might learn something.
+But for frontmatter on a personal blog, simple key-value pairs plus some nesting covers everything I throw at it.

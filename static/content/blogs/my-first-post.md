@@ -12,38 +12,34 @@ draft: false
 
 # Introduction
 
-Welcome to my first blog post! I'm excited to share my journey in web development.
+Okay so this is my first actual blog post. I've had this site sitting half-finished for way longer than I'd like to admit, and I kept telling myself I'd write "once it's ready," which is obviously a trap because it's never going to feel ready.
 
-It's strange to finally have a space that's truly mine. No Medium paywalls, no platform algorithms deciding who sees what I write—just a simple site I built from scratch. This is where I'll document what I'm learning, what I'm building, and probably some mistakes along the way.
+Honestly the main reason I wanted my own thing instead of just posting on Medium or whatever is that I'm kind of tired of writing into a platform I don't control. Like, I build a router from scratch, write some CSS by hand, and then post it somewhere that could change its algorithm tomorrow and bury everything? No thanks. This way at least if nobody reads it, it's because nobody reads it, not because some recommendation engine decided not to show it to anyone.
 
-Why start now? Because I've been putting it off for too long. Every developer says "I should start a blog," and then... they don't. So here we are. No more excuses.
+So yeah. This is going to be where I dump whatever I'm working on, mostly side projects, plus probably some complaining about bugs I caused myself.
 
 ## What I've Learned
 
-Over the past few months, I've been diving deep into modern web development. Here are some key takeaways:
+I've spent a good chunk of the last few months messing around with frontend stuff outside of my coursework, and a few things actually stuck with me enough to write down.
 
-**TypeScript is a game-changer for large applications.** I resisted it at first—"why add complexity when JavaScript works fine?" But once I started working on bigger projects, the type safety saved me countless hours of debugging. Autocomplete that actually knows what properties exist? Yes, please.
+TypeScript was annoying to learn and I avoided it for way too long. I had the classic "it's just JavaScript with extra steps" mindset. Then I had a project with like 15 files referencing the same data shape and I kept typo-ing property names, and autocomplete actually catching that before runtime made me feel kind of dumb for resisting it. Anyway I'm a convert now, mostly.
 
-**Component-based architecture makes code more maintainable.** Breaking UI into reusable pieces isn't just a React thing—it's a mindset. Even in vanilla JavaScript, thinking in components keeps your code organized. Each piece does one thing well, and that's powerful.
+Thinking in components is something I picked up from React but it turns out it applies even when you're not using React at all. I was writing some vanilla JS for a small project and caught myself splitting things into little reusable chunks anyway, just out of habit at this point. Apparently that's just how you end up organizing UI once you've seen it done properly once.
 
-**SPA routing is fun to implement from scratch.** Everyone uses libraries, but building your own router teaches you how the web actually works. The History API, event delegation, lifecycle management—it's all there if you look. Framework magic becomes a lot less magical when you've implemented it yourself.
+Building my own SPA router was probably the most "aha" thing I did this semester. Everyone just reaches for a library and I get why, but actually wiring up the History API myself and dealing with all the edge cases (back button doing weird things, scroll position, etc) made a lot of stuff that used to feel like framework magic just... not magic anymore. It's still kind of held together with tape though, I won't pretend otherwise.
 
 ## Getting Started
 
-If you're just starting out, here's my advice:
+If anyone reading this is also just starting out, here's what's worked for me, take it with a grain of salt because I'm a sixth semester student, not some senior engineer:
 
-**Build things you actually want to use.** Forget todo lists and generic portfolios. What tool would make your life easier? What site do you wish existed? Build that. You'll stay motivated, and you'll ship something real.
+Build something you'll actually use yourself. I tried doing a todo app and a portfolio site first like everyone says to and I lost interest in both within a week because I didn't actually need either of those things. This blog/site thing stuck because I genuinely wanted a place to put my stuff.
 
-**Read the documentation.** I know, boring. But MDN is actually good. So is the TypeScript handbook. Skip the Medium articles that regurgitate the same "10 tips" and go straight to the source. It's faster, and you'll learn more.
+Read actual docs instead of the fifth "10 JavaScript Tips You Didn't Know" article. MDN and the TypeScript handbook are both better written than people give them credit for. It took me an embarrassingly long time to figure that out.
 
-**Don't wait for perfection.** This site isn't perfect. There are probably bugs I haven't found yet. The CSS could be cleaner. But it's live, and that's what matters. You can always improve it later—you can't improve something that doesn't exist.
+Don't wait until it's perfect to ship it. This site definitely has bugs I haven't found yet, the CSS has some parts I'm not proud of, and there's at least one console warning I've been ignoring for a week. But it's up, and that matters more than it being flawless.
 
 ## Conclusion
 
-Stay tuned for more posts about my web development journey!
+That's it for post one. I'm planning to write more about the router I mentioned, some weird typography stuff I've been experimenting with, and maybe how I'm handling markdown parsing for this blog since that took longer than it should have.
 
-I'm planning to write about the routing system I built, some UI experiments with dynamic typography, and maybe a deep dive into how I'm handling markdown parsing for this blog. No schedule, no promises—just writing when I have something worth sharing.
-
-If you're reading this, thanks for stopping by. Feel free to check out the code on my GitHub. And if you find a bug, well... that's what issues are for.
-
-Here's to building in public and learning out loud.
+No real posting schedule, I'll just write when I have something worth saying. If you actually made it this far, thanks for reading. Code's on my GitHub if you want to poke around, and if you spot a bug, that's literally what issues are for, go ahead.

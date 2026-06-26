@@ -21,9 +21,10 @@ const blogsIndex = [
   { slug: "my-journey-to-daily-drive-linux", path: "static/content/blogs/my-journey-to-daily-driving-linux.md" },
   { slug: "moving-the-windows-users-directory-to-another-partition", path: "static/content/blogs/moving-the-windows-users-directory-to-another-partition.md" },
   { slug: "managing-android-permissions-via-adb", path: "static/content/blogs/managing-android-permissions-via-adb.md" },
-  { slug: "why-i-use-neovim", path: "static/content/blogs/why-i-use-neovim.md"},
-  { slug: "what-is-cloudflare-durable-object", path: "static/content/blogs/what-is-cloudflare-durable-object.md"},
-  { slug: "dotfiles-are-documentation", path: "static/content/blogs/dotfiles-are-documentation.md"}
+  { slug: "why-i-use-neovim", path: "static/content/blogs/why-i-use-neovim.md" },
+  { slug: "what-is-cloudflare-durable-object", path: "static/content/blogs/what-is-cloudflare-durable-object.md" },
+  { slug: "dotfiles-are-documentation", path: "static/content/blogs/dotfiles-are-documentation.md" },
+  { slug: "my-wezterm-setup", path: "static/content/blogs/my-wezterm-setup.md" },
 ];
 
 function toRFC822(dateStr: string): string {

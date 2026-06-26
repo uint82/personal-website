@@ -50,5 +50,9 @@ export const blogsIndex = [
   {
     slug: "dotfiles-are-documentation",
     path: "/content/blogs/dotfiles-are-documentation.md",
+  },
+  {
+    slug: "my-wezterm-setup",
+    path: "/content/blogs/my-wezterm-setup.md",
   }
 ];

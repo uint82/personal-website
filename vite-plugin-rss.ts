@@ -25,6 +25,7 @@ const blogsIndex = [
   { slug: "what-is-cloudflare-durable-object", path: "static/content/blogs/what-is-cloudflare-durable-object.md" },
   { slug: "dotfiles-are-documentation", path: "static/content/blogs/dotfiles-are-documentation.md" },
   { slug: "my-wezterm-setup", path: "static/content/blogs/my-wezterm-setup.md" },
+  { slug: "atomic-arch-aur-attack", path: "static/content/blogs/atomic-arch-aur-attack.md" }
 ];
 
 function toRFC822(dateStr: string): string {

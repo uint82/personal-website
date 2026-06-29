@@ -54,5 +54,9 @@ export const blogsIndex = [
   {
     slug: "my-wezterm-setup",
     path: "/content/blogs/my-wezterm-setup.md",
+  },
+  {
+    slug: "atomic-arch-aur-attack",
+    path: "/content/blogs/atomic-arch-aur-attack.md",
   }
 ];

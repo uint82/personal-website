@@ -1,7 +1,7 @@
 export const blogsIndex = [
   {
     slug: "building-my-own-frontmatter-parser",
-    path: "../..//content/blogs/building-my-own-frontmatter-parser.md",
+    path: "../../content/blogs/building-my-own-frontmatter-parser.md",
   },
   {
     slug: "my-first-post",
@@ -58,5 +58,9 @@ export const blogsIndex = [
   {
     slug: "atomic-arch-aur-attack",
     path: "/content/blogs/atomic-arch-aur-attack.md",
+  },
+  {
+    slug: "previewing-wmacro-a-desktop-macro-recorder-for-hyprland",
+    path: "/content/blogs/previewing-wmacro-a-desktop-macro-recorder-for-hyprland.md",
   }
 ];

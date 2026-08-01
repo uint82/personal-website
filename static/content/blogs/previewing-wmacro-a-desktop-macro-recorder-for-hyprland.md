@@ -2,7 +2,7 @@
 title:
   text: "Previewing wmacro: A Desktop Macro Recorder for Hyprland"
   config: "2.5c 3.5ci 2 3 3.5c 3 2.5 3.5c"
-description: "wmacro is gearing up for its v1.0.0 release. A look into building a new desktop automation tool tailored for Arch Linux and the Hyprland compositor."
+description: "A quick look at wmacro, a macro recorder I'm building for Arch Linux and Hyprland, mainly to automate repetitive tasks and game grinding, right before its v0.1.0 release."
 published_at: "July 29, 2026"
 tags: ["linux", "arch linux", "hyprland", "automation", "wmacro", "devlog", "preview"]
 author: "Abror"
@@ -10,30 +10,6 @@ reading_time: 4
 draft: false
 ---
 
-Welcome to the first look at wmacro. After a lot of coding, testing, and refining, the first stable version of my desktop macro recorder is almost ready to hit v1.0.0. If you find yourself bogged down by repetitive desktop tasks, this tool was built specifically to help streamline your workflow. It is not fully released just yet, but I am in the home stretch.
+wmacro is almost ready for v0.1.0, so I wanted to share a bit about why I built it. When I moved my daily driver to Hyprland, I quickly found out there is not really a macro recorder that works well on Wayland. Most old X11 tools just refuse to run because of how strict the security model is. I needed something to automate repetitive stuff, mostly grinding in games and some boring desktop tasks, and since I could not find a tool that just works, I decided to build my own. That is how wmacro started. It records your keystrokes and mouse movement, then plays it back through a GUI editor where you can drag and drop to reorder steps, change playback speed from 0.1x up to 10x, and add loops, if/else, or goto/label so the macro can branch or repeat by itself. Macros can even call other macros, so you can build small pieces first then combine them into something bigger. For mouse movement, there is a synthetic path engine with adjustable wobble and jitter, so it does not look like a robot clicking the exact same pixel over and over.
 
-## The Motivation Behind wmacro
-
-Desktop automation on Linux has always been highly useful. When I transitioned my daily driver to a modern Wayland environment, I quickly realized there was a noticeable gap in the tooling. Many of the legacy X11 macro recorders simply do not function under Wayland because of its heavily restricted security model.
-
-I needed a straightforward way to automate some of my tasks without writing complex, custom shell scripts for every minor thing. Since I could not find a tool that fit my exact needs, I decided to build one. That is how the concept for wmacro was born.
-
-## What It Does
-
-At its core, wmacro is designed to be lightweight, efficient, and out of your way. The application records your exact keystrokes and mouse movements, letting you play the entire sequence back on command through a full GUI editor.
-
-It goes beyond simple record and replay. You can reorder commands with drag and drop, adjust playback speed anywhere from 0.1x to 10.0x, and layer in flow control like loops, if/else conditions, and goto/label jumps for macros that need to branch or repeat intelligently. Macros can even call other macros, so you can compose small, reusable pieces into larger workflows. For mouse-heavy tasks, a hybrid synthetic path engine can humanize playback with adjustable wobble and endpoint jitter, so repeated actions do not look robotically identical every time.
-
-Whether you are automating tedious software configurations, repeating data entry steps, or executing complex window management sequences, wmacro handles it quietly in the background. The goal was to make capturing and executing a macro as frictionless as possible.
-
-## Focusing on Arch Linux and Hyprland
-
-For this upcoming v1.0.0 release, wmacro exclusively supports Arch Linux running the Hyprland compositor.
-
-Building automation tools for Wayland is inherently complex because it requires interacting directly with specific compositor protocols rather than a universal display server. By focusing strictly on Hyprland and Arch Linux, I was able to avoid getting overwhelmed by cross-environment compatibility issues. This narrow focus is what let me build, polish, and prepare a fully working tool without spreading the effort too thin. It was built to solve a problem on my own machine first.
-
-## Looking Ahead to v1.0.0
-
-Reaching version 1.0.0 is a major milestone, and I am excited to share it soon. The current feature set covers recording, playback, flow control, and 13 built-in themes, with the ability to add your own. As I finalize the last few bugs and prepare the official launch, I plan to explore adding support for other popular Wayland compositors and look into different packaging formats to make the tool accessible to a wider range of Linux users down the line.
-
-Keep an eye out for the official release. Once it goes live, you will be able to find the source code, installation instructions, and basic usage documentation in the project repository. I will also be actively looking for testers within the Hyprland community, so stay tuned for updates.
+For this first release, wmacro only supports Arch Linux with Hyprland, nothing else yet. Wayland automation is genuinely hard to build for other compositors since everything works a bit differently under the hood, so I chose to focus on my own setup first instead of trying to cover everything at once. Right now it already has 13 built-in themes plus support for custom ones, and I am close to finishing the last few bugs before v0.1.0 is ready. After that, I want to try supporting more Wayland compositors and look into proper packaging, so more people can use it and not just Hyprland users like me. I am also looking for testers from the Hyprland community once it gets closer to release, so if that sounds like you, keep an eye out.

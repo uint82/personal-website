@@ -3,3 +3,156 @@
   padding-left: 1rem;
   padding-right: 1rem;
 }
+
+.about-intro {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.about-ascii {
+  font-size: 3.7px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin: 0;
+  font-family: monospace;
+  color: var(--text);
+  opacity: 0.7;
+  user-select: none;
+  letter-spacing: 0;
+}
+
+.about-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.about-links a {
+  color: var(--link);
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.toolkit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.toolkit-category h4 {
+  margin-bottom: 0.5rem;
+  color: #888;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.toolkit-category ul {
+  padding-left: 1rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.afk-heading {
+  margin-top: 1.5rem;
+  font-size: 1.1em;
+}
+
+.afk-heading-flex {
+  margin-top: 1.5rem;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.afk-sublabel {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.novel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.novel-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.novel-item:last-child {
+  border-bottom: none;
+}
+
+.novel-item span:first-child {
+  font-weight: 500;
+}
+
+.music-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.music-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.music-item:last-child {
+  border-bottom: none;
+}
+
+.music-item span:first-child {
+  font-weight: 500;
+}
+
+.badge {
+  font-size: 0.85em;
+  opacity: 0.7;
+  background: rgba(128, 128, 128, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.cubing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95em;
+}
+
+.cubing-table thead tr {
+  border-bottom: 2px solid rgba(128, 128, 128, 0.2);
+  text-align: left;
+}
+
+.cubing-table th,
+.cubing-table td {
+  padding: 8px;
+}
+
+.cubing-table td:last-child,
+.cubing-table th:last-child {
+  text-align: right;
+}
+
+.cubing-table td:last-child {
+  font-family: monospace;
+}
+
+.cubing-table tbody tr {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.cubing-table tbody tr:last-child {
+  border-bottom: none;
+}

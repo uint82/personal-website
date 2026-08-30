@@ -35,4 +35,6 @@ To start the local development server:
 npm run dev
 ```
 
+note: worker will be pushed soon
+
 create with love by uint32

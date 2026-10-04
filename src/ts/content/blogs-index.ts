@@ -62,5 +62,9 @@ export const blogsIndex = [
   {
     slug: "previewing-wmacro-a-desktop-macro-recorder-for-hyprland",
     path: "/content/blogs/previewing-wmacro-a-desktop-macro-recorder-for-hyprland.md",
+  },
+  {
+    slug: "lessons-from-xz-utils-supply-chain-attack",
+    path: "/content/blogs/lessons-from-xz-utils-supply-chain-attack.md",
   }
 ];

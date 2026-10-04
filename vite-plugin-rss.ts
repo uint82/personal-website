@@ -26,7 +26,8 @@ const blogsIndex = [
   { slug: "dotfiles-are-documentation", path: "static/content/blogs/dotfiles-are-documentation.md" },
   { slug: "my-wezterm-setup", path: "static/content/blogs/my-wezterm-setup.md" },
   { slug: "atomic-arch-aur-attack", path: "static/content/blogs/atomic-arch-aur-attack.md" },
-  { slug: "previewing-wmacro-a-desktop-macro-recorder-for-hyprland", path: "static/content/blogs/previewing-wmacro-a-desktop-macro-recorder-for-hyprland.md" }
+  { slug: "previewing-wmacro-a-desktop-macro-recorder-for-hyprland", path: "static/content/blogs/previewing-wmacro-a-desktop-macro-recorder-for-hyprland.md" },
+  { slug: "lessons-from-xz-utils-supply-chain-attack", path: "static/content/blogs/lessons-from-xz-utils-supply-chain-attack.md" }
 ];
 
 function toRFC822(dateStr: string): string {
